@@ -1,0 +1,14 @@
+the idea of this project came when during testing of one of
+my project i needed to connect with actual database or backend service
+even when my backend part was not ready.
+
+thus i thought to develop an application whee you could pass what type of
+data you want in return.
+
+one more problem was i wasn't able to know wheter my api call
+was reaching my backend or not.
+
+thus added a real time frontend to show which calls has been made till now
+and to make it personalised i added the concept of personalised api keys
+
+
