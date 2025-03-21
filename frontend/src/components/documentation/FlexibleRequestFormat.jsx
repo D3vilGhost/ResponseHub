@@ -1,13 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router';
-export default function RequestFormat() {
+export default function FlexibleRequestFormat() {
     return (
         <div>
             {/* Header */}
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold text-center mb-4">Request Format</h1>
+                <h1 className="text-4xl font-bold text-center mb-4">Flexible Request Format</h1>
                 <p className="text-gray-600 text-center mb-12">
-                    The structure and guidelines for making API requests.
+                    The structure and guidelines for making custom response's requests.
                 </p>
             </div>
             {/* Request Format Section */}
@@ -26,6 +26,8 @@ export default function RequestFormat() {
                 <ul className="list-disc pl-6 mt-2">
                     <li><strong>method</strong>: Defines the HTTP method (GET, POST, PUT, DELETE, PATCH).</li>
                     <li><strong>data</strong>: Contains the expected response structure in JSON format.</li>
+                    <li><strong>response_structure</strong>: Exact structure of response.</li>
+
                 </ul>
             </section>
 

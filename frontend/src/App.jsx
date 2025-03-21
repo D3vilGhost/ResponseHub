@@ -7,7 +7,7 @@ import Signup from './pages/Signup';
 import ApiDocs from './pages/ApiDocs';
 import Dashboard from './pages/Dashboard';
 import Overview from './components/documentation/Overview';
-import RequestFormat from './components/documentation/RequestFormat';
+import FlexibleRequestFormat from './components/documentation/FlexibleRequestFormat';
 import ResponseFormat from './components/documentation/ResponseFormat';
 export default function App() {
   return (
@@ -35,8 +35,8 @@ export default function App() {
             element={<Overview />}
           />
           <Route
-            path="request/"
-            element={<RequestFormat />}
+            path="request/flexible"
+            element={<FlexibleRequestFormat />}
           />
           <Route
             path="response/"

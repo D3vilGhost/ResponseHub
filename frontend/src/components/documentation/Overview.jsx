@@ -5,23 +5,34 @@ export default function Overview() {
         <div>
             {/* Header */}
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold text-center mb-4">API Documentation</h1>
+                <h1 className="text-4xl font-bold text-center mb-4">Documentation</h1>
                 <p className="text-gray-600 text-center mb-12">
-                    A comprehensive guide to understanding, integrating, and utilizing the API Monitor effectively.
+                    A comprehensive guide to understanding, integrating, and utilizing the ResponseHub effectively.
                 </p>
             </div>
             {/* Content begin from here */}
             <section className="mb-6">
                 <h2 className="text-2xl font-semibold mb-2">Overview</h2>
                 <hr />
-                <p>
-                    The <code className="font-semibold">/api/client</code>  endpoint allows users to interact with the API using HTTP
-                    methods like GET, POST, PUT, DELETE, and PATCH. Each request requires the user to define the expected
-                    response structure in the body, ensuring that the data returned matches the specified format.
-                    This provides flexibility in making requests and receiving data, tailored to the user's needs.
-                    The endpoint can handle a variety of data types, including integers, strings, booleans, arrays, and objects,
-                    making it suitable for different use cases.
-                </p>
+                <ul className="list-disc pl-6">
+                    <li className="mb-2">
+                        The <code className='font-semibold'>/api/client/flexible</code> and
+                        <code className="font-semibold">/api/client/fixed</code> endpoints allow users to interact with
+                        the API using HTTP methods like GET, POST, PUT, DELETE, and PATCH. Both endpoints cater to
+                        different use cases.
+                    </li>
+                    <li className='mb-2'>
+                        <code className='font-semibold'>/api/client/flexible:</code>{" "}
+                        Allows dynamic API interactions, where users can specify the structure and type of data
+                        they expect in the response. This endpoint is suitable for flexible, on-the-fly requests and responses.
+                    </li>
+                    <li className='mb-2'>
+                        <code className='font-semibold'>/api/client/fixed:</code>{" "}
+                        Allows users to create predefined, fixed API endpoints through the dashboard.
+                        These endpoints return a fixed response structure, as defined by the user,
+                        and can be edited or deleted directly from the dashboard.
+                    </li>
+                </ul>
             </section>
 
             {/* Summary Section */}
@@ -29,36 +40,25 @@ export default function Overview() {
                 <h2 className="text-2xl font-semibold mb-2 gap-2">Summary</h2>
                 <hr />
                 <div className='mb-4'>
-                    For each API request to the <code className="font-semibold">/api/client</code> endpoint,
-                    the user specifies a request format that includes the HTTP method and an expected response
-                    structure. The request body defines both the HTTP method (GET, POST, PUT, DELETE, PATCH)
-                    and the expected structure of the response in a JSON object. This structure can include
-                    various data types such as integers, strings, booleans, arrays, and objects, each with
-                    specific constraints (e.g., min/max values or string lengths). This flexibility allows
-                    for precise specification of what data to expect in the response.
+                    For each API request to the <code className="font-semibold">/api/client/flexible</code> endpoint,
+                    the user specifies a request format that includes the HTTP method and the expected response structure.
+                    The request body defines both the HTTP method (GET, POST, PUT, DELETE, PATCH) and the expected
+                    structure of the response in a JSON object. This structure can include various data types such as
+                    integers, strings, booleans, arrays, and objects, each with specific constraints
+                    (e.g., min/max values or string lengths). This flexibility allows for precise specification
+                    of what data to expect in the response.
                 </div>
                 <div className='mb-4'>
-                    When the server processes the request, it returns a response in a consistent format.
-                    The response contains a <code className="font-semibold">status-code</code>,
-                    the requested data (if the request is successful),
-                    and an <code className="font-semibold">error</code> field if something goes wrong.
-                    The <code className="font-semibold">data</code> field will contain the actual result,
-                    structured according to the defined response format, with types like integers, strings,
-                    and booleans as expected.
-                </div>
-                <div className='mb-4'>
-                    The <code className="font-semibold">error</code> field is used to distinguish actual errors
-                    from the user-defined expected errors. If the user's request structure is incorrect or the
-                    server encounters issues that are not related to the user's expected output
-                    (e.g., missing fields, incorrect values), the response will contain a non-200 status code,
-                    and the <code className="font-semibold">error</code> field will describe the problem with a
-                    message and details. This ensures that actual errors (e.g., bad request or server errors)
-                    are clearly differentiated from expected errors that the user has defined in the request body.
-                </div>
-                <div className='mb-4'>
-                    By defining the response structure in advance, users can ensure that the API responds
-                    with the exact data format needed, while also clearly distinguishing between the data
-                    and any errors that arise during the request process.
+                    The <code className="font-semibold">/api/client/fixed</code> endpoint provides pre-configured
+                    API responses that are created and managed via the user's dashboard. These fixed APIs will
+                    always return the same structure as defined by the user when creating the fixed endpoint,
+                    offering consistency and simplicity. Users can edit or delete these fixed APIs through the
+                    dashboard interface.
+                    Users can manage API endpoints through their dashboard, with the ability to create, update, or delete endpoints.
+                    Each custom endpoint will be available under the base path <code className="font-semibold">/api/client/fixed/{"<endpoint_name>"}</code>.
+                    When a user creates a new endpoint, they specify the endpoint name, the HTTP method (GET, POST, PUT, DELETE, PATCH), and the response data that
+                    the endpoint will return. This data will be structured in JSON format.
+
                 </div>
             </section>
 
@@ -67,11 +67,11 @@ export default function Overview() {
                 <div className="font-semibold">Click Here To Know About</div>
                 <ul className="list-disc pl-6">
                     <li>
-                        <Link to="/docs/request" className='text-blue-600 hover:text-blue-900 hover:underline'>Request Format</Link>
-                    </li >
-                    <li>
                         <Link to="/docs/response" className=' text-blue-600 hover:text-blue-900 hover:underline'>Response Format</Link>
                     </li>
+                    <li>
+                        <Link to="/docs/request/flexible" className='text-blue-600 hover:text-blue-900 hover:underline'>Flexible Request Format</Link>
+                    </li >
                 </ul >
             </section >
 
@@ -95,7 +95,7 @@ export default function Overview() {
                 <hr />
 
                 {/* Example Request */}
-                <h3 className="text-xl font-medium mb-2">Example Request: POST Request to Create a User</h3>
+                <h3 className="text-xl font-medium mb-2">Example Flexible Request: POST Request to Create a User</h3>
                 <pre className="bg-gray-100 p-4 rounded-lg mt-2">
                     <code>
                         {`{

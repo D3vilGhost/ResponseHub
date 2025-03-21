@@ -1,64 +1,73 @@
 import React, { useState } from 'react';
-import { Wrench, KeySquare, Copy, Check } from 'lucide-react';
+import { GitPullRequestCreateArrow, FilePlus2 } from 'lucide-react';
+import DashboardHeader from '../components/dashboard/DashboardHeader';
+import API_KEY from '../components/dashboard/API_KEY';
 import CallRecords from '../components/dashboard/CallRecords';
+import FixedResponse from "../components/dashboard/FixedResponse"
+import CreateFixedResponse from '../components/dashboard/CreateFixedResponse';
+
 export default function Dashboard() {
-    const [copied, setCopied] = useState(false);
+    const [showCreateFixedRespone, setShowCreateFixedResponse] = useState(false);
     return (
         <div className="container mx-auto px-6 py-8">
-            {/* Header */}
-            <div className="max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold text-center mb-4">API Usage Dashboard</h1>
-                <p className="text-gray-600 text-center mb-12">
-                    Overview of API Call Activity and Performance Insights
-                </p>
-            </div>
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
-                {/* Total Calls Made */}
-                <div className="bg-white p-4 rounded-xl shadow-md col-span-1 flex items-center gap-4 ">
-                    <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                        <Wrench className="h-6 w-6 text-orange-500" />
-                    </div>
-                    <div>
-                        <p className="text-lg font-semibold">Total Calls</p>
-                        <code className="text-lg">25</code>
-                    </div>
-                </div>
-                {/* API Key */}
-                <div className="bg-white p-4 rounded-xl shadow-md col-span-1 lg:col-span-3
-                flex items-center w-full gap-4 ">
+            <DashboardHeader />
+            <API_KEY API_KEY='abc' />
+            {/* User's Fixed APIs */}
+            <div className='mb-6 bg-white p-4 rounded-xl shadow-md '>
+                {/* Header */}
+                <div className="flex items-center w-full gap-4 mb-6 ">
                     <div className="h-12 w-12 bg-orange-100 rounded-lg flex-shrink-0 flex items-center justify-center">
-                        <KeySquare className="h-6 w-6 text-orange-500" />
+                        <GitPullRequestCreateArrow className="h-6 w-6 text-orange-500" />
                     </div>
                     <div className='flex-grow'>
-                        <p className="text-lg font-semibold">API Key</p>
-                        <div className='grid grid-cols-1 rounded-md overflow-x-auto'>
-                            <code className='bg-neutral-200 p-2 rounded-md w-max' id="key">
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident, suscipit.</code>
-                        </div>
+                        <p className="text-lg font-semibold">Your Fixed API Endpoints</p>
                     </div>
                     <div
                         className="flex-shrink-0 content-center items-center justify-center gap-2 w-fit"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setCopied(true);
-                            setTimeout(() => {
-                                setCopied(false);
-                            }, 2000);
-                        }}>
-                        <div className='bg-gradient-to-r from-orange-400 to-pink-500 text-black p-2 rounded-lg 
+                    >
+                        <div className='bg-gradient-to-r from-green-300 to-green-500 text-black p-2 rounded-lg 
                             hover:opacity-90 transition-opacity hover:underline hover:scale-110 hover:cursor-pointer
                             flex items-center gap-2 justify-center
-                            '>
-
-                            {copied ? <Check className="h-6 w-6" /> : <Copy className="h-6 w-6" />} {copied ? "Copied" : "Copy"}
+                            '
+                            onClick={() => {
+                                setShowChangeMenu(false);
+                                setShowCreateFixedResponse(true);
+                            }}>
+                            <FilePlus2 /> Create
                         </div>
-
                     </div>
                 </div>
+                {/* Available APIS */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+                    <FixedResponse
+                        data={
+                            {
+                                endpoint: "Hello",
+                                method: "GET",
+                                response: `{\n\ta:"abc",\n\tb:"abc"\n}`
+                            }
+                        }
+                        onEdit={
+                            (e) => {
+                                c
+                            }
+                        }
+                    />
+                </div>
+                {/* Create New Response Form  */}
+                {showCreateFixedRespone && (
+                    <CreateFixedResponse
+                        onCancel={() => {
+                            setShowCreateFixedResponse(false);
+                        }}
+                        onSave={(data) => {
+                            alert("Please change logic of save in Dashboard.jsx");
 
+                            setShowCreateFixedResponse(false);
+                        }}
+                    />
+                )}
             </div>
-            {/* API Call Records Table */}
             <CallRecords />
         </div >
     );

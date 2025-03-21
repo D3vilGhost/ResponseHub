@@ -7,7 +7,7 @@ export default function ResponseFormat() {
             <div className="max-w-3xl mx-auto">
                 <h1 className="text-4xl font-bold text-center mb-4">Response Format</h1>
                 <p className="text-gray-600 text-center mb-12">
-                    What to expect in the server's response, including structure, data types, and key elements.
+                    What to expect in the server's response.
                 </p>
             </div>
 
@@ -45,7 +45,7 @@ export default function ResponseFormat() {
                         <Link to="/docs" className=' text-blue-600 hover:text-blue-900 hover:underline'>Overview</Link>
                     </li>
                     <li>
-                        <Link to="/docs/request" className='text-blue-600 hover:text-blue-900 hover:underline'>Request Format</Link>
+                        <Link to="/docs/request/flexible" className='text-blue-600 hover:text-blue-900 hover:underline'>Flexible Request Format</Link>
                     </li >
                 </ul >
             </section >

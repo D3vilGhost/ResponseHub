@@ -7,7 +7,7 @@ export default function Login() {
             <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
                 <div className="text-center">
                     <Link to="/" className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-pink-500 text-transparent bg-clip-text">
-                        API Monitor
+                        ResponseHub
                     </Link>
                     <h2 className="mt-6 text-3xl font-bold text-gray-900">Login</h2>
 

@@ -1,4 +1,4 @@
-import { Key, BarChart, Zap } from 'lucide-react';
+import { Key, PencilRuler, History } from 'lucide-react';
 
 export default function Home() {
     return (
@@ -10,12 +10,13 @@ export default function Home() {
                         Seamless API Access
                         <br />
                         <span className="bg-gradient-to-r from-orange-400 to-pink-500 text-transparent bg-clip-text">
-                            & Real-Time Analytics
+                            & Real-Time Response
                         </span>
                     </h1>
                     <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto mb-12">
-                        Get instant access to powerful API keys and start making calls right away.
-                        Our platform not only lets you integrate with ease but also offers detailed analytics to track and optimize every call you make.
+                        Skip the hassle of setting up multiple services for testing. Our platform provides
+                        seamless API access with real-time responses, offering both flexible and fixed formats
+                        to fit your needs.Simplify your testing process and get results faster, all in one place.
                     </p>
                 </div>
                 {/* Features Grid */}
@@ -26,27 +27,27 @@ export default function Home() {
                         </div>
                         <h3 className="text-xl font-semibold mb-4">Instant Access</h3>
                         <p className="text-gray-600">
-                            Obtain your personalized API key immediately and start integrating without any delays, making your setup effortless and quick.
+                            Easily generate and manage your APIs with a straightforward process. Access all the tools you need to integrate quickly and efficiently into your applications.
                         </p>
                     </div>
 
                     <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
                         <div className="h-12 w-12 bg-pink-100 rounded-lg flex items-center justify-center mb-6">
-                            <BarChart className="text-pink-500" size={24} />
+                            <PencilRuler className="text-pink-500" size={24} />
                         </div>
-                        <h3 className="text-xl font-semibold mb-4">Real-Time Insights</h3>
+                        <h3 className="text-xl font-semibold mb-4">Customizable Formats</h3>
                         <p className="text-gray-600">
-                            Track every API call in real-time with detailed analytics to optimize performance and gain valuable usage insights.
+                            Choose from a variety of APIs to suit your specific needs — whether you need a fixed structure for consistency or a flexible format for dynamic solutions.
                         </p>
                     </div>
 
                     <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
                         <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-                            <Zap className="text-purple-500" size={24} />
+                            <History className="text-purple-500" size={24} />
                         </div>
-                        <h3 className="text-xl font-semibold mb-4">Optimize Usage</h3>
+                        <h3 className="text-xl font-semibold mb-4">Track & Maintain API History</h3>
                         <p className="text-gray-600">
-                            Analyze usage patterns to optimize API calls, reduce unnecessary costs, and ensure the most efficient performance possible.
+                            Stay on top of your API usage with detailed records of all interactions. Our platform ensures you can easily access past activity whenever needed.
                         </p>
                     </div>
                 </div>
