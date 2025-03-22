@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthContext"
 import toast from "react-hot-toast"
 
 export function useDashboard() {
+  // will fetch apiKey and fixedResponses of user
   const { user } = useAuth()
   const [stats, setStats] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
