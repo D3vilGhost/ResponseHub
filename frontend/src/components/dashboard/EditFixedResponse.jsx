@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import { Save } from 'lucide-react';
 
-export default function EditFixedResponse({ onCancel, onSave }) {
-    const [formData, setFormData] = useState({
-        endpoint: '',
-        method: 'GET',
-        response: '{\n\tyourResponse : "goesHere"\n}'
-    });
+export default function EditFixedResponse({
+    onCancel,
+    onSave,
+    currentResponseData,
+    setCurrentResponseData
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSave(formData);
-    };
+}) {
+    const [formData, setFormData] = useState(currentResponseData);
 
     return (
         <div className="fixed inset-0 backdrop-blur-lg flex items-center justify-center p-4 overflow-auto">
             <div className="from-orange-300 to-pink-300 bg-gradient-to-r rounded-lg p-6 w-full max-w-md border-1">
                 <h2 className="text-2xl font-bold mb-4">Edit Fixed Response</h2>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={
+                    (e) => {
+                        setCurrentResponseData(formData);
+                        e.preventDefault();
+                        onSave(formData);
+                    }
+                }>
                     <div className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium pb-2">Endpoint</label>

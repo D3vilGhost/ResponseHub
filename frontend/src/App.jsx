@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router';
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -9,7 +9,9 @@ import Dashboard from './pages/Dashboard';
 import Overview from './components/documentation/Overview';
 import FlexibleRequestFormat from './components/documentation/FlexibleRequestFormat';
 import ResponseFormat from './components/documentation/ResponseFormat';
+import Loader from "./components/Loader";
 export default function App() {
+  const [loading, setLoading] = useState(false);
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Header />
@@ -45,9 +47,15 @@ export default function App() {
         </Route>
         <Route
           path="/dashboard"
-          element={<Dashboard />}
+          element={
+            <Dashboard
+              loading={loading}
+              setLoading={setLoading}
+            />
+          }
         />
       </Routes>
+      {loading && <Loader />}
     </div>
   );
 }

@@ -5,11 +5,19 @@ import API_KEY from '../components/dashboard/API_KEY';
 import CallRecords from '../components/dashboard/CallRecords';
 import FixedResponse from "../components/dashboard/FixedResponse"
 import CreateFixedResponse from '../components/dashboard/CreateFixedResponse';
-
-export default function Dashboard() {
+import EditFixedResponse from '../components/dashboard/EditFixedResponse';
+import ConfirmDelete from '../components/dashboard/ConfirmDelete';
+export default function Dashboard({ loading, setLoading }) {
     const [showCreateFixedRespone, setShowCreateFixedResponse] = useState(false);
+    const [showEditFixedResponse, setShowEditFixedResponse] = useState(false);
+    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+    const [currentResponseData, setCurrentResponseData] = useState(null);
+
+    // above state represents data under consideration whether create, edit or delele
+
     return (
         <div className="container mx-auto px-6 py-8">
+
             <DashboardHeader />
             <API_KEY API_KEY='abc' />
             {/* User's Fixed APIs */}
@@ -30,7 +38,6 @@ export default function Dashboard() {
                             flex items-center gap-2 justify-center
                             '
                             onClick={() => {
-                                setShowChangeMenu(false);
                                 setShowCreateFixedResponse(true);
                             }}>
                             <FilePlus2 /> Create
@@ -38,8 +45,11 @@ export default function Dashboard() {
                     </div>
                 </div>
                 {/* Available APIS */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 z-0">
                     <FixedResponse
+                        setShowConfirmDelete={setShowConfirmDelete}
+                        setShowEditFixedResponse={setShowEditFixedResponse}
+                        setCurrentResponseData={setCurrentResponseData}
                         data={
                             {
                                 endpoint: "Hello",
@@ -48,12 +58,23 @@ export default function Dashboard() {
                             }
                         }
                         onEdit={
-                            (e) => {
-                                c
+                            (data) => {
+                                setShowEditFixedResponse(true);
+                                setCurrentResponseData(data);
+                            }
+                        }
+                        onDelete={
+                            (data) => {
+                                setShowConfirmDelete(true);
+                                setCurrentResponseData(data);
                             }
                         }
                     />
                 </div>
+            </div>
+
+            {/* Different forms */}
+            <div>
                 {/* Create New Response Form  */}
                 {showCreateFixedRespone && (
                     <CreateFixedResponse
@@ -67,8 +88,45 @@ export default function Dashboard() {
                         }}
                     />
                 )}
+
+                {/* Edit Fixed Response form */}
+                {showEditFixedResponse && (
+                    <EditFixedResponse
+                        currentResponseData={currentResponseData}
+                        setCurrentResponseData={setCurrentResponseData}
+                        onCancel={() => {
+                            setShowEditFixedResponse(false);
+                        }}
+                        onSave={() => {
+                            alert("Please change logic of edit in FixedResponse.jsx");
+                            setShowEditFixedResponse(false);
+                        }}
+                    />
+                )}
+
+                {/* Confirm Delete form */}
+                {showConfirmDelete && (
+                    <ConfirmDelete
+                        onCancel={() => {
+                            setShowConfirmDelete(false);
+                            setCurrentResponseData(null);
+                        }}
+                        onConfirm={() => {
+                            alert("Please change logic of delete in Dashboard.jsx");
+                            setShowConfirmDelete(false);
+                        }}
+                    />
+                )}
+
             </div>
-            <CallRecords />
+
+            {/* API Call's history */}
+            <CallRecords
+                onClearRecords={() => {
+                    if (confirm("Your History will be cleared. This action is irreversible!")) {
+                        alert("Sorry logic hasn't been created yet!")
+                    }
+                }} />
         </div >
     );
 }
