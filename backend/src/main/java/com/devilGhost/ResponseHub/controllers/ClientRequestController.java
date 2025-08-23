@@ -1,4 +1,4 @@
 package com.devilGhost.ResponseHub.controllers;
 
-public class FixedRequestController {
+public class ClientRequestController {
 }

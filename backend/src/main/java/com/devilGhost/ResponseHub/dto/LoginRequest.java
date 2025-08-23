@@ -1,10 +1,9 @@
 package com.devilGhost.ResponseHub.dto;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
-public class UserSignupRequest {
-    private String name;
+@Getter
+public class LoginRequest {
     private String username;
     private String password;
 }

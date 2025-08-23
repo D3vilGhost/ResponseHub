@@ -19,7 +19,6 @@ export default function ResponseFormat() {
                 <pre className="bg-gray-100 p-4 rounded-lg mt-2">
                     <code>
                         {`{
-  "status_code": <value_from_user_request>,
   "data":  <requested_data> ,
   "error": {
     "message": "brief_error_message",
@@ -29,8 +28,7 @@ export default function ResponseFormat() {
                     </code>
                 </pre>
                 <ul className="list-disc pl-6 mt-2">
-                    <li><strong>status_code</strong>: The HTTP status code specified in the request, reflecting the status of the response.</li>
-                    <li><strong>data</strong>: Contains the requested data formatted according to the <code>response_structure</code>.</li>
+                    <li><strong>data</strong>: Contains the requested data formatted according to the <code>response_schema</code>.</li>
                     <li><strong>error</strong>: Contains details about the error, if something goes wrong.</li>
                 </ul>
                 <p className='py-4'>

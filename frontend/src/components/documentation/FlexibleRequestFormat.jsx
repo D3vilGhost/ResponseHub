@@ -14,32 +14,10 @@ export default function FlexibleRequestFormat() {
             <section className="mb-6">
                 <h2 className="text-2xl font-semibold mb-2">Request Format</h2>
                 <hr />
-                <p>The request body must be a <span className="font-semibold">JSON</span> object that includes:</p>
+                <p>The request body must be a <span className="font-semibold">JSON</span> object and follows this format:</p>
                 <pre className="bg-gray-100 p-4 rounded-lg mt-2">
                     <code>
                         {`{
-"method": "<http_method>",
-"body": JSON.stringify(response_structure)
-}`}
-                    </code>
-                </pre>
-                <ul className="list-disc pl-6 mt-2">
-                    <li><strong>method</strong>: Defines the HTTP method (GET, POST, PUT, DELETE, PATCH).</li>
-                    <li><strong>data</strong>: Contains the expected response structure in JSON format.</li>
-                    <li><strong>response_structure</strong>: Exact structure of response.</li>
-
-                </ul>
-            </section>
-
-            {/* Expected Response Structure Section */}
-            <section className="mb-6">
-                <h2 className="text-2xl font-semibold mb-2">Expected Response Structure</h2>
-                <hr />
-                <p>The <span className="font-semibold">response_structure</span> must be a <span className="font-semibold">JSON</span> object and follows this format:</p>
-                <pre className="bg-gray-100 p-4 rounded-lg mt-2">
-                    <code>
-                        {`{
-"api_key": "<your_api_key>",
 "status_code": <expected_status_code>,
 "response_schema": {
     "field1": "type1",
@@ -49,8 +27,7 @@ export default function FlexibleRequestFormat() {
                     </code>
                 </pre>
                 <ul className="list-disc pl-6 mt-2">
-                    <li><strong>api_key</strong>: Your unique API key.</li>
-                    <li><strong>status_code</strong>: The status code that the server is expected to return. The server will respond with the specified status code, which must be an integer.</li>
+                    <li><strong>status_code</strong>: The status code that the server is expected to return. The server will respond with the specified status code, which must be an valid integer.</li>
                     <li><strong>response_schema</strong>: A JSON object that defines the schema of the response data, including types and constraints.</li>
                 </ul>
             </section>
@@ -76,7 +53,6 @@ export default function FlexibleRequestFormat() {
                             <li><strong>type</strong>: "integer" indicates the value is a number.</li>
                             <li><strong>min</strong>: Minimum value for the integer (e.g., 0).</li>
                             <li><strong>max</strong>: Maximum value for the integer (e.g., 100).</li>
-                            {/* <li><strong>exact</strong>:(optional) I </li> */}
                         </ul>
                     </div>
 
@@ -87,15 +63,13 @@ export default function FlexibleRequestFormat() {
                             <code>
                                 {`{
 "type": "string",
-"min": 5,
-"max": 10
+"size": 5
 }`}
                             </code>
                         </pre>
                         <ul className="list-disc pl-6 mt-2">
-                            <li><strong>type</strong>: "string" indicates the value is a string.</li>
-                            <li><strong>min</strong>: Minimum number of words (e.g., 5).</li>
-                            <li><strong>max</strong>: Maximum number of words (e.g., 10).</li>
+                            <li><strong>type</strong>: "string" indicates the value is a string consisting of multiple words.</li>
+                            <li><strong>size</strong>: Number of words in the string (Not characters) (e.g., 5).</li>
                         </ul>
                     </div>
                     {/* Boolean */}
@@ -121,18 +95,16 @@ export default function FlexibleRequestFormat() {
                                 {`{
 "type": "array",
 "item_type": "string",
-"min": 3,
-"max": 5
+"size": 3
 }`}
                             </code>
                         </pre>
                         <ul className="list-disc pl-6 mt-2">
                             <li><strong>type</strong>: "array" indicates the value is an array.</li>
                             <li><strong>item_type</strong>: Specifies the type of each item in the array. Possible values are : ["integer","boolean", "string"] for now.</li>
-                            <li><strong>min</strong>: Minimum number of items in the array (e.g., 3).</li>
-                            <li><strong>max</strong>: Maximum number of items in the array (e.g., 5).</li>
+                            <li><strong>size</strong>: Number of items in the array (e.g., 3).</li>
                         </ul>
-                        <strong>NOTE: Integer will be a random positive integer, and the string will consist of a single word."</strong>
+                        <strong>NOTE: Integer will be a random positive integer, and the string will consist of a single word of random size."</strong>
                     </div>
 
                     {/* Object */}

@@ -13,11 +13,13 @@ import java.security.Key;
 
 
 @Configuration
-@Getter// to get properties from application.properties
+@Getter
 public class JwtConfig {
+
     // JwtConfig files holds details related to any token
     @Value("${jwt.secretKey}")
     private String secretKey; // to hold jwt secret key
+
     @Value("${jwt.expirationTime}")
     private int expirationTime; // to hold expiration time of token
 

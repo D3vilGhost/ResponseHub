@@ -1,7 +1,7 @@
 package com.devilGhost.ResponseHub.services;
 
-import com.devilGhost.ResponseHub.models.UserModel;
-import com.devilGhost.ResponseHub.repository.UserModelRepository;
+import com.devilGhost.ResponseHub.models.UserEntity;
+import com.devilGhost.ResponseHub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,16 +16,14 @@ import java.util.Optional;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserModelRepository userModelRepository;
-    // custom userDetailService class is required to let spring security know from where
-    // to look for user while authorization
+    private UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserModel> user=userModelRepository.findByUsername(username);
+        Optional<UserEntity> user=userRepository.findByUsername(username);
         if(user.isEmpty()){
             throw new UsernameNotFoundException("User not found with username:"+username);
         }
-        // in case we have found the user pass his details in User object maintained by spring.
         return new User(user.get().getUsername(),user.get().getPassword(), Collections.emptyList());
     }
 }
