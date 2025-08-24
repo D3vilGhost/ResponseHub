@@ -1,6 +1,7 @@
 package com.devilGhost.ResponseHub.controllers;
 
-import com.devilGhost.ResponseHub.dto.DashboardFixedEndpointDTO;
+import com.devilGhost.ResponseHub.dto.CreateFixedEndpointDTO;
+import com.devilGhost.ResponseHub.dto.EditFixedEndpointDTO;
 import com.devilGhost.ResponseHub.services.DashboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class DashboardController {
     @PostMapping("/fixed")
     public ResponseEntity<?> createFixedEndpoint(
             @AuthenticationPrincipal User user,
-            @RequestBody DashboardFixedEndpointDTO newFixedEndpoint
+            @RequestBody CreateFixedEndpointDTO newFixedEndpoint
     ){
         try {
 
@@ -66,7 +67,7 @@ public class DashboardController {
     @PutMapping("/fixed")
     public ResponseEntity<?> updateFixedEndpoint(
             @AuthenticationPrincipal User user,
-            @RequestBody DashboardFixedEndpointDTO endpointToBeUpdated
+            @RequestBody EditFixedEndpointDTO endpointToBeUpdated
     ){
         try {
 
@@ -92,11 +93,18 @@ public class DashboardController {
     @DeleteMapping("/fixed")
     public ResponseEntity<?> deleteFixedEndpoint(
             @AuthenticationPrincipal User user,
-            @RequestBody DashboardFixedEndpointDTO endpointToBeDeleted
+            @RequestParam("method") String method, @RequestParam("endpoint") String endpoint
     ){
         try {
+
+            if(method.isBlank() || endpoint.isBlank()){
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(Map.of("error","Specify the resource to be deleted."));
+            }
             // not much to do in controller layer
-            return dashboardService.deleteFixedEndpoint(user.getUsername(),endpointToBeDeleted);
+            return dashboardService.deleteFixedEndpoint(user.getUsername(),method,endpoint);
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -107,12 +115,12 @@ public class DashboardController {
         }
     }
 
+
     @GetMapping("/records")
     public ResponseEntity<?> getUsersRecords(@AuthenticationPrincipal User user, @RequestParam int page){
         try {
             // not much to check in controller layer
             return dashboardService.getRecords(user.getUsername(),page);
-
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity
@@ -127,7 +135,6 @@ public class DashboardController {
         try {
             // not much to check in controller layer
             return dashboardService.deleteRecords(user.getUsername());
-
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity

@@ -1,12 +1,11 @@
-package com.devilGhost.ResponseHub.jwt;
+package com.devilGhost.ResponseHub.config;
 
-import com.devilGhost.ResponseHub.services.CustomUserDetailsService;
+import com.devilGhost.ResponseHub.jwt.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,9 +25,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Autowired
-    ApplicationContext applicationContext;
-
-    @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
     @Override
@@ -43,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write("{'error':'Missing auth Token'}");
+                response.getWriter().write("{\"error\":\"Access Denied: Missing Token.\"}");
                 return; // don't continue filter chain
             }
             // else continue filter chain
@@ -63,12 +59,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON.toString());
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{\"error\":\"Invalid token. Token has been deleted!\"}");
+            response.getWriter().write("{\"error\":\"Access Denied: Invalid token; Token deleted!\"}");
             return; // stop the filter chain
         }
 //        till this point we now have a valid token , now check that token username in database
         String username=jwtService.getUsernameFromToken(token);
-        // using try-catch incase username is invalid , CustomUserDetailService will throw Exception
+        // using try-catch in case username is invalid , CustomUserDetailService will throw Exception
         try{
             // let the below code run even if it wants to access non-restricted resource
             // as it just sets the AuthenticationPrincipal for us
@@ -85,7 +81,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         catch (UsernameNotFoundException e){
             // this means token was valid but username is farzi thus delete this token
             response.setHeader("Set-Cookie", "jwt=; HttpOnly; Path=/; Max-Age=0");
-            // now if user was trying to access the non restricted resource , let him acess
+            // now if user was trying to access the non-restricted resource , let him acess
             if(!isRestrictedEndpoint){
                 filterChain.doFilter(request,response);
                 return;
@@ -94,12 +90,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{'error':'Invalid Username, token has been deleted!'}");
+            response.getWriter().write("{\"error\":\"Access Denied: Invalid username; Token deleted\"}");
             return; // stop the filter chain
         }
     }
     private boolean checkEndpointRestrictiveness(HttpServletRequest request){
         String path=request.getRequestURI();
-        return path.contains("/api/server/dashboard");
+        return path.startsWith("/api/server/dashboard/");
     }
 }

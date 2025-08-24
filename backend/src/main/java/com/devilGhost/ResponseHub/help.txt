@@ -42,11 +42,11 @@ class UserController {
 
     // Endpoint to login a user
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody UserLoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<?> loginUser(@RequestBody UserLoginRequest loginRequestDTO, HttpServletResponse response) {
         try {
             // Authenticate the user using Spring Security's AuthenticationManager
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword())
             );
         } catch (Exception e) {
             // If authentication fails (e.g., bad credentials), return 401 Unauthorized
@@ -54,7 +54,7 @@ class UserController {
         }
 
         // If authentication is successful, retrieve the user from the repository
-        Optional<User> userOptional = userRepository.findByUsername(loginRequest.getUsername());
+        Optional<User> userOptional = userRepository.findByUsername(loginRequestDTO.getUsername());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             String token = jwtService.generateToken(user); // Generate a JWT token for the authenticated user

@@ -1,13 +1,20 @@
 package com.devilGhost.ResponseHub.services;
 
-import com.devilGhost.ResponseHub.dto.DashboardFixedEndpointDTO;
+import com.devilGhost.ResponseHub.dto.CreateFixedEndpointDTO;
+import com.devilGhost.ResponseHub.dto.EditFixedEndpointDTO;
 import com.devilGhost.ResponseHub.models.FixedEndpoint;
+import com.devilGhost.ResponseHub.models.Record;
+import com.devilGhost.ResponseHub.models.UserEntity;
 import com.devilGhost.ResponseHub.repository.RecordRepository;
 import com.devilGhost.ResponseHub.repository.FixedEndpointRepository;
 import com.devilGhost.ResponseHub.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +55,7 @@ public class DashboardService {
         }
     }
 
-    public ResponseEntity<?> createFixedEndpoint(String username, DashboardFixedEndpointDTO newFixedEndpoint) {
+    public ResponseEntity<?> createFixedEndpoint(String username, CreateFixedEndpointDTO newFixedEndpoint) {
         try {
             Optional<FixedEndpoint> oldEndpoint =
                     fixedEndpointRepository.findByUsernameAndMethodAndEndpoint(
@@ -58,8 +65,9 @@ public class DashboardService {
                     );
 
             if(oldEndpoint.isPresent()) {
-                throw new DuplicateKeyException("This endpoint already in use.");
+                throw new DuplicateKeyException("This endpoint is already in use.");
             }
+
             FixedEndpoint newFixedEndpointEntity=new FixedEndpoint();
             newFixedEndpointEntity.setUsername(username);
             newFixedEndpointEntity.setMethod(newFixedEndpoint.getMethod());
@@ -89,14 +97,15 @@ public class DashboardService {
         }
     }
 
-    public ResponseEntity<?> updateFixedEndpoint(String username, DashboardFixedEndpointDTO fixedEndpoint) {
+    public ResponseEntity<?> updateFixedEndpoint(String username, EditFixedEndpointDTO fixedEndpoint) {
         try {
             Optional<FixedEndpoint> oldFixedEndpoint=
                     fixedEndpointRepository.findByUsernameAndMethodAndEndpoint(
                         username,
-                        fixedEndpoint.getMethod(),
-                        fixedEndpoint.getEndpoint()
+                        fixedEndpoint.getOldMethod(),
+                        fixedEndpoint.getOldEndpoint()
                     );
+
             if(oldFixedEndpoint.isEmpty()){
                 return ResponseEntity
                         .status(HttpStatus.BAD_REQUEST)
@@ -104,26 +113,14 @@ public class DashboardService {
                         .body(Map.of("error","Fixed Endpoint doesn't exist."));
             }
 
-            FixedEndpoint updatedEndpoint=oldFixedEndpoint.get();
-
-            if(
-                    updatedEndpoint.getEndpoint().equals(fixedEndpoint.getEndpoint()) &&
-                    updatedEndpoint.getMethod().equals(fixedEndpoint.getMethod()) &&
-                    updatedEndpoint.getStatusCode()==fixedEndpoint.getStatusCode() &&
-                    updatedEndpoint.getResponseBody().equals(fixedEndpoint.getResponseBody())
-            ){
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body(Map.of("error","Change something to update."));
-            }
-
-            updatedEndpoint.setEndpoint(fixedEndpoint.getEndpoint());
-            updatedEndpoint.setMethod(fixedEndpoint.getMethod());
-            updatedEndpoint.setStatusCode(fixedEndpoint.getStatusCode());
-            updatedEndpoint.setResponseBody(fixedEndpoint.getResponseBody());
+            FixedEndpoint updatedEndpoint = oldFixedEndpoint.get();
+            updatedEndpoint.setMethod(fixedEndpoint.getNewMethod());
+            updatedEndpoint.setEndpoint(fixedEndpoint.getNewEndpoint());
+            updatedEndpoint.setStatusCode(fixedEndpoint.getNewStatusCode());
+            updatedEndpoint.setResponseBody(fixedEndpoint.getNewResponseBody());
 
             fixedEndpointRepository.save(updatedEndpoint);
+
             return ResponseEntity
                     .status(HttpStatus.ACCEPTED)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -139,14 +136,11 @@ public class DashboardService {
         }
     }
 
-    public ResponseEntity<?> deleteFixedEndpoint(String username, DashboardFixedEndpointDTO endpointToBeDeleted) {
+    public ResponseEntity<?> deleteFixedEndpoint(String username,String method,String endpoint) {
         try {
+
             Optional<FixedEndpoint> existingEndpoint =
-                    fixedEndpointRepository.findByUsernameAndMethodAndEndpoint(
-                            username,
-                            endpointToBeDeleted.getMethod(),
-                            endpointToBeDeleted.getEndpoint()
-                    );
+                    fixedEndpointRepository.findByUsernameAndMethodAndEndpoint(username, method, endpoint);
 
             if(existingEndpoint.isEmpty()){
                 return ResponseEntity
@@ -154,6 +148,7 @@ public class DashboardService {
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(Map.of("error","No such endpoint exist to be deleted"));
             }
+
             fixedEndpointRepository.deleteById(existingEndpoint.get().getId());
 
             return ResponseEntity
@@ -173,9 +168,17 @@ public class DashboardService {
 
     public ResponseEntity<?> getRecords(String username, int page) {
         try {
+            // create a pageable to define records to retrieve
+            Pageable pageable= PageRequest.of(
+                    page-1,
+                    10,// setting limit of per page to 10
+                    Sort.by(Sort.Direction.DESC,"time","a") // descending order of time
+            );
+            Page<Record> userRecords = recordRepository.findByUsername(username, pageable);
             return ResponseEntity
-                    .status(201)
-                    .body("jaa ke dekh recaard mein, insaan h ki bhgwaaan");
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(userRecords.get());
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -188,13 +191,14 @@ public class DashboardService {
 
     public ResponseEntity<?> deleteRecords(String username) {
         try {
+            recordRepository.deleteAllByUsername(username);
             return ResponseEntity
-                    .status(201)
-                    .body("are you sure ? -> <-");
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(Map.of("message","Successfully deleted all of your records."));
 
         } catch (Exception e) {
             log.error(e.getMessage());
-
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .contentType(MediaType.APPLICATION_JSON)

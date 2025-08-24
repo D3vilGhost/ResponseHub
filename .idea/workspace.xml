@@ -5,31 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8f49008-d20c-4fdf-9bee-eb01a61a6b51" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/models/FixedEndpoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw.cmd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/controllers/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/controllers/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/controllers/DashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/controllers/FixedRequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/controllers/ClientRequestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/controllers/FlexibleRequestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/dto/UserLoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/dto/LoginRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/dto/UserSignupRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/dto/SignUpRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/jwt/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/jwt/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/jwt/JwtConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/jwt/JwtConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/jwt/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/jwt/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/models/CallRecordModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/models/Record.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/models/FixedRequestModel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/models/UserModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/models/UserEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/repository/CallRecordRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/repository/CallRecordRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/repository/FixedRequestRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/repository/FixedEndpointRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/repository/UserModelRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/services/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/services/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/services/CustomUserDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/services/CustomUserDetailsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/services/DashboardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/devilGhost/ResponseHub/services/DashboardService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/documentation/FlexibleRequestFormat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/documentation/FlexibleRequestFormat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/documentation/Overview.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/documentation/Overview.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/documentation/ResponseFormat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/documentation/ResponseFormat.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,22 +15,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="31hLdfAXy07xhr1eXuOXyQb9Q4l" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;
   }
-}]]></component>
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="f8f49008-d20c-4fdf-9bee-eb01a61a6b51" name="Changes" comment="" />

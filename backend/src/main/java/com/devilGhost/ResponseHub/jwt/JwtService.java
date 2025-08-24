@@ -3,6 +3,7 @@ package com.devilGhost.ResponseHub.jwt;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Map;
 
+//@Slf4j
 @Service
 public class JwtService {
     @Autowired
@@ -64,12 +66,13 @@ public class JwtService {
             Jwts.parser()
                     .verifyWith(jwtConfig.getSigningKey())
                     .build()
-                    .parseSignedClaims(jwtConfig.getSecretKey())
+                    .parseSignedClaims(token)
                     .getPayload();
             // basically if we were able to parse token till validate of signing key
             // it means token is valid
             return true;
         } catch (Exception e) {
+//            log.info(e.getMessage());
             return false;
         }
     }

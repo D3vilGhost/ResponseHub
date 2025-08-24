@@ -1,11 +1,9 @@
 package com.devilGhost.ResponseHub.config;
 
-import com.devilGhost.ResponseHub.jwt.JwtAuthenticationFilter;
-import com.devilGhost.ResponseHub.services.CustomUserDetailsService;
-import org.apache.tomcat.websocket.AuthenticationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -22,16 +20,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+//    @Autowired
+//    private CustomCredentialsFilter customCredentialsFilter;
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
-
         DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
         provider.setUserDetailsService(customUserDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
@@ -54,15 +53,25 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
                         // below one need to be authenticated as they need jwt token
-                        .requestMatchers("/api/server/auth").permitAll()
-                        .requestMatchers("/api/server/dashboard").authenticated()
+                        .requestMatchers("/api/server/auth/*").permitAll()
+                        .requestMatchers("/api/server/dashboard/*").authenticated()
+                        .requestMatchers("/api/client/**").authenticated()
                         // then deny others
                         .anyRequest().denyAll()
                 )
                 .sessionManagement(session->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )// stateless cuz we are doing token based
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                )// stateless cuz we are doing token based and we are creating our own token
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                // to send a msg along with forbidden requests, have configured it below
+                .exceptionHandling(ex->ex
+                        .accessDeniedHandler(
+                            (request, response,accessDeniedException) ->
+                            {
+                                response.setStatus(HttpStatus.FORBIDDEN.value());
+                                response.getWriter().write("Access Denied :"+accessDeniedException.getMessage());
+                            })
+                );
         return http.build();
     }
 
