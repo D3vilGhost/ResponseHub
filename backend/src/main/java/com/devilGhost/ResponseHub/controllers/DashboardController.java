@@ -1,7 +1,6 @@
 package com.devilGhost.ResponseHub.controllers;
 
-import com.devilGhost.ResponseHub.dto.CreateFixedEndpointDTO;
-import com.devilGhost.ResponseHub.dto.EditFixedEndpointDTO;
+import com.devilGhost.ResponseHub.dto.FixedEndpointDTO;
 import com.devilGhost.ResponseHub.services.DashboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,7 @@ public class DashboardController {
     @PostMapping("/fixed")
     public ResponseEntity<?> createFixedEndpoint(
             @AuthenticationPrincipal User user,
-            @RequestBody CreateFixedEndpointDTO newFixedEndpoint
+            @RequestBody FixedEndpointDTO newFixedEndpoint
     ){
         try {
 
@@ -67,11 +66,12 @@ public class DashboardController {
     @PutMapping("/fixed")
     public ResponseEntity<?> updateFixedEndpoint(
             @AuthenticationPrincipal User user,
-            @RequestBody EditFixedEndpointDTO endpointToBeUpdated
+            @RequestBody FixedEndpointDTO endpointToBeUpdated
     ){
         try {
 
             String constraintError=endpointToBeUpdated.checkConstraintsOnFields();
+
             if(constraintError!=null){
                 return ResponseEntity
                         .status(HttpStatus.BAD_REQUEST)

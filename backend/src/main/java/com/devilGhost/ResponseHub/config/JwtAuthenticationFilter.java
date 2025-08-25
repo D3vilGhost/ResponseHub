@@ -29,6 +29,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        if(request.getRequestURI().startsWith("/api/client/")){
+            filterChain.doFilter(request,response);
+            return;// this will lead to do apiKeyHeaderFilter and skip jwt filter
+        }
+
         // since jwt filter operates even if endpoint is restricted or not we need to manually set check
         // for endpoint and then do set responses accordingly
         String token = jwtService.getTokenFromRequest(request);
@@ -81,7 +87,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         catch (UsernameNotFoundException e){
             // this means token was valid but username is farzi thus delete this token
             response.setHeader("Set-Cookie", "jwt=; HttpOnly; Path=/; Max-Age=0");
-            // now if user was trying to access the non-restricted resource , let him acess
+            // now if user was trying to access the non-restricted resource , let him access
             if(!isRestrictedEndpoint){
                 filterChain.doFilter(request,response);
                 return;

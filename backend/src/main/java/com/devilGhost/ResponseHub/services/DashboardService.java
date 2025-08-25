@@ -1,10 +1,8 @@
 package com.devilGhost.ResponseHub.services;
 
-import com.devilGhost.ResponseHub.dto.CreateFixedEndpointDTO;
-import com.devilGhost.ResponseHub.dto.EditFixedEndpointDTO;
+import com.devilGhost.ResponseHub.dto.FixedEndpointDTO;
 import com.devilGhost.ResponseHub.models.FixedEndpoint;
 import com.devilGhost.ResponseHub.models.Record;
-import com.devilGhost.ResponseHub.models.UserEntity;
 import com.devilGhost.ResponseHub.repository.RecordRepository;
 import com.devilGhost.ResponseHub.repository.FixedEndpointRepository;
 import com.devilGhost.ResponseHub.repository.UserRepository;
@@ -55,7 +53,7 @@ public class DashboardService {
         }
     }
 
-    public ResponseEntity<?> createFixedEndpoint(String username, CreateFixedEndpointDTO newFixedEndpoint) {
+    public ResponseEntity<?> createFixedEndpoint(String username, FixedEndpointDTO newFixedEndpoint) {
         try {
             Optional<FixedEndpoint> oldEndpoint =
                     fixedEndpointRepository.findByUsernameAndMethodAndEndpoint(
@@ -97,13 +95,18 @@ public class DashboardService {
         }
     }
 
-    public ResponseEntity<?> updateFixedEndpoint(String username, EditFixedEndpointDTO fixedEndpoint) {
+    public ResponseEntity<?> updateFixedEndpoint(String username, FixedEndpointDTO fixedEndpoint) {
         try {
+            // while updating the endpoint we need to do validation after db fetch as
+            // frontend could have the same values for all the field with one little change
+            // however the data store in db might already be the one which was sent to update
+            // thus need to do a field check after that part as well
+
             Optional<FixedEndpoint> oldFixedEndpoint=
                     fixedEndpointRepository.findByUsernameAndMethodAndEndpoint(
                         username,
-                        fixedEndpoint.getOldMethod(),
-                        fixedEndpoint.getOldEndpoint()
+                        fixedEndpoint.getMethod(),
+                        fixedEndpoint.getEndpoint()
                     );
 
             if(oldFixedEndpoint.isEmpty()){
@@ -114,19 +117,17 @@ public class DashboardService {
             }
 
             FixedEndpoint updatedEndpoint = oldFixedEndpoint.get();
-            updatedEndpoint.setMethod(fixedEndpoint.getNewMethod());
-            updatedEndpoint.setEndpoint(fixedEndpoint.getNewEndpoint());
-            updatedEndpoint.setStatusCode(fixedEndpoint.getNewStatusCode());
-            updatedEndpoint.setResponseBody(fixedEndpoint.getNewResponseBody());
+            updatedEndpoint.setStatusCode(fixedEndpoint.getStatusCode());
+            updatedEndpoint.setResponseBody(fixedEndpoint.getResponseBody());
 
             fixedEndpointRepository.save(updatedEndpoint);
-
             return ResponseEntity
                     .status(HttpStatus.ACCEPTED)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(Map.of("message","Successfully updated."));
 
-        }catch (Exception e) {
+        }
+        catch (Exception e) {
 
             log.error(e.getMessage());
             return ResponseEntity

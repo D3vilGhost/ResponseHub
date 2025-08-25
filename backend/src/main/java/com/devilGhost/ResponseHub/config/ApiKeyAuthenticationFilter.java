@@ -18,7 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-//@Component
+@Component
 public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -26,17 +26,26 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        if(request.getRequestURI().startsWith("/api/server/")){
+            filterChain.doFilter(request,response);
+            return;
+            // this will lead to continuation of filter chain and will allow jwtFilter to set authUserToken
+        }
+
         String apiKeyHeader = request.getHeader("Authorization");
         if(apiKeyHeader==null){
             // we don't have api-key and need it for further processing
             // thus stop the filter chain and return response accordingly
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setContentType(MediaType.APPLICATION_JSON.toString());
-            response.getWriter().write("\"error\":\"Access Denied: Missing API-Key.\"");
+            response.getWriter().write("{\"error\":\"Access Denied: Missing API-Key.\"}");
             return;
         }
+
         String apiKey=apiKeyHeader.substring(8);// "Bearer "
         try{
             // fetch user details via api-key hash it before search
