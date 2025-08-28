@@ -81,7 +81,7 @@ public class AuthService {
             newUser.setName(signupRequestDTO.getName());
             newUser.setUsername(signupRequestDTO.getUsername());
             newUser.setPassword(passwordEncoder.encode(signupRequestDTO.getPassword()));
-            newUser.setApiKey(passwordEncoder.encode(UUID.randomUUID().toString()));// hash the api-key as well
+            newUser.setApiKey(UUID.randomUUID().toString()); // could encrypt it as well {encrypt not hash/encode}
 
             userRepository.save(newUser);
 

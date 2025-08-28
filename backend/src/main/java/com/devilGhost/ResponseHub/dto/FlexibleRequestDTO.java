@@ -1,12 +1,10 @@
 package com.devilGhost.ResponseHub.dto;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Getter;
-
-import java.util.Map;
 
 @Getter
 public class FlexibleRequestDTO {
     private int status_code;
-    private Map<String, JsonNode> response_schema;
+    private String response_schema;
+    // we will initially get it as string and will format it in service layer
 }
