@@ -1,17 +1,32 @@
-import { Link } from 'react-router';
-import { Mail, Lock } from 'lucide-react';
-
+import { Link } from "react-router";
+import { Mail, Lock } from "lucide-react";
+import useLogin from "../hooks/useLogin";
 export default function Login() {
+    const { login } = useLogin();
+
     return (
         <div className="min-h-screen flex items-center justify-center px-4">
             <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
                 <div className="text-center">
                     <h2 className="text-3xl font-bold text-gray-900">Login</h2>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault() }}>
+                <form
+                    className="mt-8 space-y-6"
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+                        const form = new FormData(e.target);
+                        const loginCredentials = Object.fromEntries(
+                            form.entries()
+                        );
+                        await login(loginCredentials);
+                    }}
+                >
                     <div className="space-y-4">
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                            <label
+                                htmlFor="email"
+                                className="block text-sm font-medium text-gray-700"
+                            >
                                 Username
                             </label>
                             <div className="mt-1 relative">
@@ -28,7 +43,10 @@ export default function Login() {
                             </div>
                         </div>
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                            <label
+                                htmlFor="password"
+                                className="block text-sm font-medium text-gray-700"
+                            >
                                 Password
                             </label>
                             <div className="mt-1 relative">
@@ -48,8 +66,11 @@ export default function Login() {
 
                     <div className="flex items-center justify-between">
                         <p className="mt-2 text-sm text-gray-600">
-                            Don't have an account?{' '}
-                            <Link to="/signup" className="font-medium text-orange-500 hover:text-orange-400">
+                            Don't have an account?{" "}
+                            <Link
+                                to="/signup"
+                                className="font-medium text-orange-500 hover:text-orange-400"
+                            >
                                 Signup
                             </Link>
                         </p>

@@ -1,61 +1,74 @@
-import React, { useState } from 'react';
-import { Routes, Route } from 'react-router';
-import Header from './components/Header';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import ApiDocs from './pages/ApiDocs';
-import Dashboard from './pages/Dashboard';
-import Overview from './components/documentation/Overview';
-import FlexibleRequestFormat from './components/documentation/FlexibleRequestFormat';
-import ResponseFormat from './components/documentation/ResponseFormat';
+import React, { useState } from "react";
+import { Routes, Route, Navigate } from "react-router";
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ApiDocs from "./pages/ApiDocs";
+import Dashboard from "./pages/Dashboard";
+import Overview from "./components/documentation/Overview";
+import FlexibleRequestFormat from "./components/documentation/FlexibleRequestFormat";
+import ResponseFormat from "./components/documentation/ResponseFormat";
 import Loader from "./components/Loader";
+import { useAuthContext } from "./context/AuthContext.jsx";
+
 export default function App() {
-  const [loading, setLoading] = useState(false);
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={<Home />}
-        />
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-        <Route
-          path="/signup"
-          element={<Signup />}
-        />
-        <Route
-          path="/docs"
-          element={<ApiDocs />}
-        >
-          <Route
-            path=""
-            element={<Overview />}
-          />
-          <Route
-            path="request/flexible"
-            element={<FlexibleRequestFormat />}
-          />
-          <Route
-            path="response/"
-            element={<ResponseFormat />}
-          />
-        </Route>
-        <Route
-          path="/dashboard"
-          element={
-            <Dashboard
-              loading={loading}
-              setLoading={setLoading}
-            />
-          }
-        />
-      </Routes>
-      {loading && <Loader />}
-    </div>
-  );
+    const [loading, setLoading] = useState(false);
+    const { authUser } = useAuthContext();
+
+    // now return a router with above paths
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+            <Header />
+            <Routes>
+                {/* Home */}
+                <Route path="/" element={<Home />} />
+
+                {/* Login */}
+                <Route
+                    path="/login"
+                    element={
+                        authUser ? <Navigate to="/dashboard" /> : <Login />
+                    }
+                />
+
+                {/* Signup */}
+                <Route
+                    path="/signup"
+                    element={
+                        authUser ? <Navigate to="/dashboard" /> : <Signup />
+                    }
+                />
+
+                {/* Docs with nested routes */}
+                <Route path="/docs" element={<ApiDocs />}>
+                    <Route index element={<Overview />} />
+                    <Route
+                        path="request/flexible"
+                        element={<FlexibleRequestFormat />}
+                    />
+                    <Route path="response" element={<ResponseFormat />} />
+                </Route>
+
+                {/* Dashboard */}
+                <Route
+                    path="/dashboard"
+                    element={
+                        authUser ? (
+                            <Dashboard
+                                loading={loading}
+                                setLoading={setLoading}
+                            />
+                        ) : (
+                            <Navigate to="login" />
+                        )
+                    }
+                />
+
+                {/* Catch-all (acts like errorElement) */}
+                <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+            {loading && <Loader />}
+        </div>
+    );
 }

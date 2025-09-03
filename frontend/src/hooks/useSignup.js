@@ -1,30 +1,64 @@
-import { useState } from "react"
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
+import { useAuthContext } from "../context/AuthContext.jsx";
+import { useNavigate } from "react-router";
 
-export function useRegister() {
-  const [apiKey, setApiKey] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+function useSignup() {
+    const { setAuthUser } = useAuthContext();
+    const navigate = useNavigate();
+    const signup = async ({ name, username, password }) => {
+        // check for input constraints
+        const success = handleInputErrors({
+            name,
+            username,
+            password,
+        });
 
-  const register = async (formData) => {
-    setIsLoading(true)
-    try {
-      const response = await fetch("http://localhost:8080/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      })
+        if (!success) return;
 
-      if (!response.ok) throw new Error("Registration failed")
+        let loading = toast.loading("Processing...");
 
-      const data = await response.json()
-      setApiKey(data.apiKey)
-      toast.success("Registration successful!")
-    } catch (error) {
-      toast.error("Registration failed. Please try again.")
-    } finally {
-      setIsLoading(false)
+        try {
+            const res = await fetch("/api/server/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: { name, username, password },
+            });
+
+            const data = await res.json();
+
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            localStorage.setItem("user", JSON.stringify(data));
+            setAuthUser(data);
+            toast.success(`Welcome ${fullName} !`);
+            navigate("/dashboard");
+        } catch (error) {
+            toast.error(error.message);
+        } finally {
+            toast.remove(loading);
+        }
+    };
+
+    return { signup };
+}
+export default useSignup;
+
+function handleInputErrors({ name, username, password }) {
+    if (!name || !username || !password) {
+        toast.error("Please fill in all fields");
+        return false;
     }
-  }
 
-  return { register, apiKey, isLoading }
+    if (username.includes(" ")) {
+        toast.error("Username cannot have space in it!");
+        return false;
+    }
+
+    if (password.length < 6) {
+        toast.error("Password must be at least 6 characters");
+        return false;
+    }
+
+    return true;
 }

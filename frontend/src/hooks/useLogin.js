@@ -1,40 +1,54 @@
-import { useNavigate } from "react-router"
-import { useStore } from "../store/useStore"
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
+import { useAuthContext } from "../context/AuthContext.jsx";
+import { useNavigate } from "react-router";
 
-export function useAuth() {
-  const { user, setUser, clearUser } = useStore()
-  const navigate = useNavigate()
+function useLogin() {
+    const { setAuthUser } = useAuthContext();
+    const navigate = useNavigate();
 
-  const login = async (credentials) => {
-    try {
-      const response = await fetch("http://localhost:8080/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: credentials,
-      })
+    const login = async ({ username, password }) => {
+        // check for errors
+        const success = handleInputErrors(username, password);
+        if (!success) return;
+        // create a loading toast
+        const loading = toast.loading("Processing...");
 
-      if (!response.ok) throw new Error("Login failed")
+        try {
+            const res = await fetch("/api/server/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: { username, password },
+            });
 
-      const data = await response.json()
-      setUser(data)
-      toast.success("Welcome back!")
-      navigate("/dashboard")
-    } catch (error) {
-      toast.error("Login failed. Please try again.")
+            const data = await res.json();
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            localStorage.setItem("user", JSON.stringify(data));
+            setAuthUser(data);
+            toast.success(`Welcome ${data.username} !`);
+            navigate("/dashboard");
+        } catch (error) {
+            toast.error(error.message);
+        } finally {
+            toast.remove(loading);
+        }
+    };
+
+    return { login };
+}
+export default useLogin;
+
+function handleInputErrors(username, password) {
+    if (!username || !password) {
+        toast.error("Please fill in all fields");
+        return false;
     }
-  }
+    if (username.includes(" ")) {
+        toast.error("Username cannot have space in it!");
+        return false;
+    }
 
-  const logout = () => {
-    clearUser()
-    navigate("/login")
-    toast.success("Logged out successfully")
-  }
-
-  return {
-    user,
-    isAuthenticated: !!user,
-    login,
-    logout,
-  }
+    return true;
 }

@@ -29,9 +29,10 @@ export default function Overview() {
             <span className="font-semibold">POST</span> request with a body that
             defines the expected response structure. The request body includes
             the desired <code className="font-semibold">status_code</code> and a{" "}
-            <code className="font-semibold">response_schema</code> object that outlines the
-            response schema, supporting types like integers, strings, booleans,
-            arrays, and objects. (View Request Format for details.)
+            <code className="font-semibold">response_schema</code> object that
+            outlines the response schema, supporting types like integers,
+            strings, booleans, arrays, and objects. (View Request Format for
+            details.)
           </li>
           <li className="mb-2">
             The <code className="font-semibold">/api/client/fixed</code>{" "}
@@ -53,8 +54,9 @@ export default function Overview() {
           <li className="mb-2">
             All requests both{" "}
             <code className="font-semibold">/api/client/flexible</code> and{" "}
-            <code className="font-semibold">/api/client/fixed</code> must
-            include the API key in the request header as: <br />
+            <code className="font-semibold">/api/client/fixed </code>
+            must include an API key in the request header using Bearer token
+            authentication: : <br />
             <code className="font-semibold">
               "Authorization: Bearer &lt;your_api_key&gt;"{" "}
             </code>
@@ -63,6 +65,32 @@ export default function Overview() {
             Each request responds with the status code defined in the request.
             The actual status codes for all requests are available in the user
             dashboard
+          </li>
+          <li className="mb-2">
+            Allowed status codes for both type of endpoints include:
+            <br />
+            <strong>1xx Informational:</strong> 100, 101, 102, 103
+            <br />
+            <strong>2xx Success:</strong> 200, 201, 202, 203, 204, 205, 206,
+            207, 208, 226
+            <br />
+            <strong>3xx Redirection:</strong> 300, 301, 302, 303, 304, 305, 306,
+            307, 308
+            <br />
+            <strong>4xx Client Error:</strong> 400, 401, 402, 403, 404, 405,
+            406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418,
+            421, 422, 423, 424, 425, 426, 428, 429, 431, 451
+            <br />
+            <strong>5xx Server Error:</strong> 500, 501, 502, 503, 504, 505,
+            506, 507, 508, 510, 511
+          </li>
+          <li className="mb-2">
+            For <code className="font-semibold">/api/client/fixed</code> APIs,
+            endpoint names can only include the following characters: <br />
+            Alphanumeric (<code>a-z</code>, <code>A-Z</code>, <code>0-9</code>),
+            Dot (<code>.</code>), Dash (<code>-</code>), Underscore (
+            <code>_</code>), EqualTo (<code>=</code>), QuestionMark (
+            <code>?</code>), and Ampersand (<code>&amp;</code>).
           </li>
         </ul>
       </section>
@@ -103,15 +131,20 @@ export default function Overview() {
         </p>
         <ul className="list-disc pl-6 mt-2">
           <li>
-            <code className="font-semibold">message</code>: A brief explanation of the error.
+            <code className="font-semibold">message</code>: A brief explanation
+            of the error.
           </li>
           <li>
-            <code className="font-semibold">details</code>: A detailed explanation of why the request
-            failed.
+            <code className="font-semibold">details</code>: A detailed
+            explanation of why the request failed.
           </li>
         </ul>
         <br />
-        <p> <strong>NOTE:</strong> Clients must check that error is non null before accessing data.</p>
+        <p>
+          {" "}
+          <strong>NOTE:</strong> Clients must check that error is non null
+          before accessing data.
+        </p>
       </section>
 
       {/* Example Request and Response Section */}
@@ -137,7 +170,9 @@ export default function Overview() {
         </pre>
 
         {/* Example Response */}
-        <h3 className="text-xl font-medium mb-2">Example Response: Success with status code 201</h3>
+        <h3 className="text-xl font-medium mb-2">
+          Example Response: Success with status code 201
+        </h3>
         <pre className="bg-gray-100 p-4 rounded-lg mt-2">
           <code>
             {`{

@@ -1,15 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router';
-import { Mail, Lock, User } from 'lucide-react';
+import { Link } from "react-router";
+import { Mail, Lock, User } from "lucide-react";
+import useSignup from "../hooks/useSignup";
 
 function Signup() {
+    const { signup } = useSignup();
     return (
         <div className="min-h-screen flex items-center justify-center px-4">
             <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
                 <div className="text-center">
-                    <h2 className="text-3xl font-bold text-gray-900">Create your account</h2>
+                    <h2 className="text-3xl font-bold text-gray-900">
+                        Create your account
+                    </h2>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault() }}>
+                <form
+                    className="mt-8 space-y-6"
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+                        const form = new FormData(e.target);
+                        const signupCredentials = Object.fromEntries(
+                            form.entries()
+                        );
+                        await signup(signupCredentials);
+                    }}
+                >
                     <div className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700">
@@ -66,8 +79,11 @@ function Signup() {
 
                     <div className="flex items-center">
                         <p className="mt-2 text-sm text-gray-600">
-                            Already have an account?{' '}
-                            <Link to="/login" className="font-medium text-orange-500 hover:text-orange-400">
+                            Already have an account?{" "}
+                            <Link
+                                to="/login"
+                                className="font-medium text-orange-500 hover:text-orange-400"
+                            >
                                 Login
                             </Link>
                         </p>
