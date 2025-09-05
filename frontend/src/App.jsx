@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router";
 import Header from "./components/Header";
 import Home from "./pages/Home";
@@ -11,11 +10,11 @@ import FlexibleRequestFormat from "./components/documentation/FlexibleRequestFor
 import ResponseFormat from "./components/documentation/ResponseFormat";
 import Loader from "./components/Loader";
 import { useAuthContext } from "./context/AuthContext.jsx";
+import { useLoadingContext } from "./context/LoadingContext.jsx";
 
 export default function App() {
-    const [loading, setLoading] = useState(false);
     const { authUser } = useAuthContext();
-
+    const { loading } = useLoadingContext();
     // now return a router with above paths
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -53,16 +52,7 @@ export default function App() {
                 {/* Dashboard */}
                 <Route
                     path="/dashboard"
-                    element={
-                        authUser ? (
-                            <Dashboard
-                                loading={loading}
-                                setLoading={setLoading}
-                            />
-                        ) : (
-                            <Navigate to="login" />
-                        )
-                    }
+                    element={true ? <Dashboard /> : <Navigate to="login" />} //change true line here
                 />
 
                 {/* Catch-all (acts like errorElement) */}

@@ -1,27 +1,27 @@
 import toast from "react-hot-toast";
 
-export default function useFetchRecords() {
-    const fetchRecords = async (
-        records,
+export default function useDeleteRecords() {
+    const deleteRecords = async (
+        setPageNum,
         setRecords,
-        pageNum,
         setIsNextPageDisabled,
         setLoading
     ) => {
         setLoading(true);
         try {
             // no need to send any data as we just need to remove token
-            const res = await fetch(
-                `/api/server/dashboard/records?page=${pageNum}`
-            ); //GET Request
+            const res = await fetch("/api/server/dashboard/records", {
+                method: "DELETE",
+            });
 
             const data = await res.json();
             // just incase something happens
             if (data.error) {
                 throw new Error(data.error);
             }
-            setRecords(data);
-            setIsNextPageDisabled(records.length < 10);
+            setPageNum(1);
+            setRecords([]);
+            setIsNextPageDisabled(true);
         } catch (error) {
             toast.error(error.message);
         } finally {
@@ -29,5 +29,5 @@ export default function useFetchRecords() {
         }
     };
 
-    return { fetchRecords };
+    return { deleteRecords };
 }

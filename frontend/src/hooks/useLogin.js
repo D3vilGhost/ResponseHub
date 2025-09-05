@@ -25,8 +25,8 @@ function useLogin() {
                 throw new Error(data.error);
             }
 
-            localStorage.setItem("user", JSON.stringify(data));
-            setAuthUser(data);
+            localStorage.setItem("user", JSON.stringify(data.username));
+            setAuthUser({ username });
             toast.success(`Welcome ${data.username} !`);
             navigate("/dashboard");
         } catch (error) {

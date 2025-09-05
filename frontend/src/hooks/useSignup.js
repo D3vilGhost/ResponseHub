@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import { useAuthContext } from "../context/AuthContext.jsx";
 import { useNavigate } from "react-router";
 
-function useSignup() {
+export default function useSignup() {
     const { setAuthUser } = useAuthContext();
     const navigate = useNavigate();
     const signup = async ({ name, username, password }) => {
@@ -42,7 +42,6 @@ function useSignup() {
 
     return { signup };
 }
-export default useSignup;
 
 function handleInputErrors({ name, username, password }) {
     if (!name || !username || !password) {
