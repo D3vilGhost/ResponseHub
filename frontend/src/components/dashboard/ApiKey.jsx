@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { KeySquare, Copy, Check } from "lucide-react";
 
-export default function ApiKey({
-    API_KEY = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident, suscipit.",
-}) {
+export default function ApiKey({ API_KEY }) {
     const [copied, setCopied] = useState(false); // to change content of copy button
 
     return (

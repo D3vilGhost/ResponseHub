@@ -3,7 +3,25 @@ import FixedRequest from "../components/dashboard/FixedRequest";
 import ApiKey from "../components/dashboard/ApiKey";
 import { RecordsContextProvider } from "../context/RecordsContext";
 import { FixedRequestsContextProvider } from "../context/FixedRequestsContext";
+import { useAuthContext } from "../context/AuthContext.jsx";
+import { useEffect } from "react";
+import useFetchApiKey from "../hooks/useFetchApiKey.js";
+import { useLoadingContext } from "../context/LoadingContext.jsx";
 export default function Dashboard() {
+    const { authUser, setAuthUser } = useAuthContext();
+    const { setLoading } = useLoadingContext();
+    const { fetchApiKey } = useFetchApiKey();
+    useEffect(() => {
+        // this useEffect hook runs only once when dashboard loads
+        // and thus stores apiKey in memory ensuring security
+        const apiKeyFetcher = async () => {
+            const keyObject = await fetchApiKey(setLoading);
+            setAuthUser(keyObject);
+        };
+        if (!authUser) {
+            apiKeyFetcher();
+        }
+    }, []);
     return (
         <div className="container mx-auto px-6 py-8">
             {/* Header for Dashboard */}
@@ -17,7 +35,7 @@ export default function Dashboard() {
             </div>
 
             {/* Api Key part of dashboard */}
-            <ApiKey API_KEY="abc" />
+            <ApiKey API_KEY={authUser.apiKey} />
 
             {/* Fixed Responses part of dashboard */}
             <FixedRequestsContextProvider>

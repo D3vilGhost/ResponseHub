@@ -1,14 +1,11 @@
 import { createContext, useContext, useState } from "react";
-import Cookies from "js-cookie";
 // create a context global state
 export const AuthContext = createContext();
 
 // create a contextProvider which will wrap the app and will provide it globally
+// auth user contains the apiKey object
 export const AuthContextProvider = ({ children }) => {
-    const [authUser, setAuthUser] = useState({
-        apiKey: "",
-        username: "",
-    });
+    const [authUser, setAuthUser] = useState(null);
 
     return (
         <AuthContext.Provider value={{ authUser, setAuthUser }}>
