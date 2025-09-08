@@ -1,5 +1,3 @@
-Here’s your `README.md` generated only from the documentation you provided, with no extra content added:
-
 # ResponseHub
 
 A comprehensive guide to understanding, integrating, and utilizing the ResponseHub effectively.
