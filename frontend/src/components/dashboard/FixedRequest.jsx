@@ -1,14 +1,6 @@
-import {
-    Edit2,
-    FilePlus2,
-    GitPullRequestCreateArrow,
-    MoreVertical,
-    Save,
-    Trash2,
-} from "lucide-react";
+import { FilePlus2, GitPullRequestCreateArrow } from "lucide-react";
 import { useEffect, useState } from "react";
 import RefreshButton from "./RefreshButton";
-import ConfirmDelete from "./ConfirmDelete";
 
 import { useLoadingContext } from "../../context/LoadingContext";
 import { useFixedRequestsContext } from "../../context/FixedRequestsContext";
@@ -44,7 +36,7 @@ export default function FixedRequest() {
         // this useEffect fetches the users list and update them
         const requestListRefreshHandler = async () => {
             const newList = await fetchFixedRequest(setLoading);
-            setFixedRequestList(newList);
+            setFixedRequestList([...newList]);
         };
         requestListRefreshHandler();
     }, [refreshToken]);
@@ -97,8 +89,10 @@ export default function FixedRequest() {
                             <FixedRequestTile
                                 key={
                                     fixedRequestData.method +
-                                    fixedRequestData.endpoint
-                                }
+                                    fixedRequestData.endpoint +
+                                    fixedRequestData.statusCode +
+                                    fixedRequestData.responseBody
+                                } // if key doesn't change then react doesn't re render
                                 data={fixedRequestData}
                                 setShowEditRequest={setShowEditRequest}
                                 setShowCreateRequest={setShowCreateRequest}

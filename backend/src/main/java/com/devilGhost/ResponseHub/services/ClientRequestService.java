@@ -59,7 +59,7 @@ public class ClientRequestService {
             // check for availability of endpoint
             Optional<FixedEndpoint> optionalResponseFormat = fixedEndpointRepository.findByUsernameAndMethodAndEndpoint(
                     username, method,
-                    endpoint.substring(18) // to remove "/api/client/fixed/" part
+                    endpoint.substring(17) // to remove "/api/client/fixed" part
             );
             if (optionalResponseFormat.isEmpty()) {
                 throw new ClientRequestErrorException(

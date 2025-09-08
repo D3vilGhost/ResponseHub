@@ -1,5 +1,5 @@
 export default function useFetchApiKey() {
-    const fetchApiKey = async (setLoading) => {
+    const fetchApiKey = async (setLoading, setAuthUser) => {
         setLoading(true);
         try {
             // will fetch apiKey based on jwt token
@@ -10,10 +10,10 @@ export default function useFetchApiKey() {
             if (apiKeyObject?.error) {
                 throw new Error(apiKeyObject.error);
             }
-            return apiKeyObject;
+            setAuthUser(apiKeyObject);
         } catch (error) {
             // won't do anything with error
-            return null;
+            setAuthUser(null);
         } finally {
             setLoading(false);
         }

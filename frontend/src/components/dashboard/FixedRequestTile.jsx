@@ -1,7 +1,6 @@
 import { Edit2, MoreVertical, Trash2 } from "lucide-react";
 import { useLoadingContext } from "../../context/LoadingContext";
 import useDeleteFixedRequest from "../../hooks/useDeleteFixedRequest";
-import { useFixedRequestsContext } from "../../context/FixedRequestsContext";
 import { useState } from "react";
 
 export default function FixedRequestTile({
@@ -14,7 +13,6 @@ export default function FixedRequestTile({
     const { setLoading } = useLoadingContext();
     const { deleteFixedRequest } = useDeleteFixedRequest();
     const [showChangeMenu, setShowChangeMenu] = useState(false);
-
     const editAction = (e) => {
         e.preventDefault();
         setShowChangeMenu(false);
@@ -69,11 +67,13 @@ export default function FixedRequestTile({
                     {data.method} - {data.statusCode}
                 </p>
                 <div className="text-sm font-semibold mb-2 text-gray-900 overflow-x-auto py-2">
-                    /api/client/fixed/{data.endpoint}
+                    /api/client/fixed{data.endpoint}
                 </div>
-                <pre className="text-gray-700 bg-orange-100 p-2 rounded-md ">{`${JSON.stringify(
-                    data.responseBody
-                )}`}</pre>
+                <div className="text-gray-700 bg-orange-100 p-2 rounded-md ">
+                    <pretty-json expand={0}>
+                        {JSON.stringify(JSON.parse(data.responseBody))}
+                    </pretty-json>
+                </div>
             </div>
         </div>
     );

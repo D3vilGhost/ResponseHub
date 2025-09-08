@@ -138,15 +138,23 @@ function Record({
 }) {
     return (
         <tr className="p-1 border-b hover:bg-orange-200 rounded-md">
-            <td className="px-4 py-2 border text-md text-center">{time}</td>
+            <td className="px-4 py-2 border text-md text-center">
+                {formatUnixTimestamp(time)}
+            </td>
             <td className="px-4 py-2 border text-md text-center">{method}</td>
             <td className="px-4 py-2 border text-md text-center">{endpoint}</td>
             <td className="px-4 py-2 border text-md text-center">
                 {statusCode}
             </td>
-            <td className="px-4 py-2 border text-md">{requestBody}</td>
             <td className="px-4 py-2 border text-md">
-                {JSON.stringify(responseBody)}
+                <pretty-json expand={0}>
+                    {JSON.stringify(requestBody)}
+                </pretty-json>
+            </td>
+            <td className="px-4 py-2 border text-md">
+                <pretty-json expand={0}>
+                    {JSON.stringify(responseBody)}
+                </pretty-json>
             </td>
         </tr>
     );
@@ -187,4 +195,19 @@ function Pagination({
             </button>
         </div>
     );
+}
+
+function formatUnixTimestamp(timestamp) {
+    const date = new Date(timestamp * 1000); // Convert to milliseconds
+
+    const pad = (num) => String(num).padStart(2, "0");
+
+    const day = pad(date.getDate());
+    const month = pad(date.getMonth() + 1);
+    const year = String(date.getFullYear()).slice(-2); // Last two digits
+
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+
+    return `${hours}:${minutes} ${day}/${month}/${year}`;
 }

@@ -69,7 +69,7 @@ public class RandomDataGeneratorService {
         }
         // else type had something else thus throw not valid type exception
         throw new ClientRequestErrorException(
-                "Invalid type in response_schema.",
+                "Invalid type in responseBody.",
                 " 'type' of key allowed are [integer,boolean,array]"
         );
     }

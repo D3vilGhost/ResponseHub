@@ -23,8 +23,7 @@ export default function App() {
         // this useEffect hook runs only once when page loads
         // and thus stores apiKey in memory ensuring security
         const apiKeyFetcher = async () => {
-            const keyObject = await fetchApiKey(setLoading);
-            setAuthUser(keyObject);
+            await fetchApiKey(setLoading, setAuthUser);
         };
         apiKeyFetcher();
     }, []);
@@ -64,7 +63,15 @@ export default function App() {
                 {/* Dashboard */}
                 <Route
                     path="/dashboard"
-                    element={authUser ? <Dashboard /> : <Navigate to="login" />} //change true line here
+                    element={
+                        loading ? (
+                            <Dashboard />
+                        ) : authUser ? (
+                            <Dashboard />
+                        ) : (
+                            <Navigate to="/login" />
+                        )
+                    }
                 />
 
                 {/* Catch-all (acts like errorElement) */}

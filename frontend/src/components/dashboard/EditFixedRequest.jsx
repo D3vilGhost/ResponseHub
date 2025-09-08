@@ -14,7 +14,7 @@ export default function EditFixedRequest({
         e.preventDefault();
         // set data  back to empty
         setEditRequestData({
-            method: "",
+            method: "/",
             endpoint: "",
             statusCode: 0,
             responseBody: "",

@@ -73,9 +73,9 @@ public class DTOValidatorService {
             return "Allowed characters in endpoint: a–z, A–Z, 0–9, ., -, _, /";
         }
         // 5) remove starting '/' as well from endpoint
-        if (endpoint.charAt(0) == '/') {
-            endpoint = endpoint.substring(1);
-        }
+//        if (endpoint.charAt(0) == '/') {
+//            endpoint = endpoint.substring(1);
+//        }
         // finally update this in the dtoObject as well
         dtoData.setEndpoint(endpoint);
         return null;
