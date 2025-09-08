@@ -21,7 +21,7 @@ export default function useSignup() {
             const res = await fetch("/api/server/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: { name, username, password },
+                body: JSON.stringify({ name, username, password }),
             });
 
             const data = await res.json();
@@ -29,9 +29,8 @@ export default function useSignup() {
             if (data.error) {
                 throw new Error(data.error);
             }
-            localStorage.setItem("user", JSON.stringify(data));
-            setAuthUser(data);
-            toast.success(`Welcome ${fullName} !`);
+            toast.success(`Welcome ${data.name} !`);
+            setAuthUser({ apiKey: data.apiKey });
             navigate("/dashboard");
         } catch (error) {
             toast.error(error.message);

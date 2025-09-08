@@ -1,25 +1,32 @@
-import React from 'react'
-import { Link } from 'react-router';
+import React from "react";
+import { Link } from "react-router";
 export default function FlexibleRequestFormat() {
     return (
         <div>
             {/* Header */}
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold text-center mb-4">Flexible Request Format</h1>
+                <h1 className="text-4xl font-bold text-center mb-4">
+                    Flexible Request Format
+                </h1>
                 <p className="text-gray-600 text-center mb-12">
-                    The structure and guidelines for making custom response's requests.
+                    The structure and guidelines for making custom response's
+                    requests.
                 </p>
             </div>
             {/* Request Format Section */}
             <section className="mb-6">
                 <h2 className="text-2xl font-semibold mb-2">Request Format</h2>
                 <hr />
-                <p>The request body must be a <span className="font-semibold">JSON</span> object and follows this format:</p>
+                <p>
+                    The request body must be a{" "}
+                    <span className="font-semibold">JSON</span> object and
+                    follows this format:
+                </p>
                 <pre className="bg-gray-100 p-4 rounded-lg mt-2">
                     <code>
                         {`{
-"status_code": <expected_status_code>,
-"response_schema": {
+"statusCode": <expected_status_code>,
+"responseBody": {
     "field1": "type1",
     "field2": "type2"
     }
@@ -27,17 +34,28 @@ export default function FlexibleRequestFormat() {
                     </code>
                 </pre>
                 <ul className="list-disc pl-6 mt-2">
-                    <li><strong>status_code</strong>: The status code that the server is expected to return. The server will respond with the specified status code, which must be an valid integer.</li>
-                    <li><strong>response_schema</strong>: A JSON object that defines the schema of the response data, including types and constraints.</li>
+                    <li>
+                        <strong>statusCode</strong>: The status code that the
+                        server is expected to return. The server will respond
+                        with the specified status code, which must be an valid
+                        integer.
+                    </li>
+                    <li>
+                        <strong>responseBody</strong>: A JSON object that
+                        defines the schema of the response data, including types
+                        and constraints.
+                    </li>
                 </ul>
             </section>
 
             {/* Response Schema Types Section */}
             <section className="mb-8">
-                <h2 className="text-2xl font-semibold mb-2">Response Schema Types</h2>
+                <h2 className="text-2xl font-semibold mb-2">
+                    Response Schema Types
+                </h2>
 
                 {/* Integer */}
-                <div className='pl-6'>
+                <div className="pl-6">
                     <div className="mb-4">
                         <h3 className="text-xl font-medium mb-2">Integer</h3>
                         <pre className="bg-gray-100 p-4 rounded-lg mt-2">
@@ -50,9 +68,18 @@ export default function FlexibleRequestFormat() {
                             </code>
                         </pre>
                         <ul className="list-disc pl-6 mt-2">
-                            <li><strong>type</strong>: "integer" indicates the value is a number.</li>
-                            <li><strong>min</strong>: Minimum value for the integer (e.g., 0).</li>
-                            <li><strong>max</strong>: Maximum value for the integer (e.g., 100).</li>
+                            <li>
+                                <strong>type</strong>: "integer" indicates the
+                                value is a number.
+                            </li>
+                            <li>
+                                <strong>min</strong>: Minimum value for the
+                                integer (e.g., 0).
+                            </li>
+                            <li>
+                                <strong>max</strong>: Maximum value for the
+                                integer (e.g., 100).
+                            </li>
                         </ul>
                     </div>
 
@@ -68,8 +95,14 @@ export default function FlexibleRequestFormat() {
                             </code>
                         </pre>
                         <ul className="list-disc pl-6 mt-2">
-                            <li><strong>type</strong>: "string" indicates the value is a string consisting of multiple words.</li>
-                            <li><strong>size</strong>: Number of words in the string (Not characters) (e.g., 5).</li>
+                            <li>
+                                <strong>type</strong>: "string" indicates the
+                                value is a string consisting of multiple words.
+                            </li>
+                            <li>
+                                <strong>size</strong>: Number of words in the
+                                string (Not characters) (e.g., 5).
+                            </li>
                         </ul>
                     </div>
                     {/* Boolean */}
@@ -83,7 +116,11 @@ export default function FlexibleRequestFormat() {
                             </code>
                         </pre>
                         <ul className="list-disc pl-6 mt-2">
-                            <li><strong>type</strong>: "boolean" indicates the value is either <code>true</code> or <code>false</code>.</li>
+                            <li>
+                                <strong>type</strong>: "boolean" indicates the
+                                value is either <code>true</code> or{" "}
+                                <code>false</code>.
+                            </li>
                         </ul>
                     </div>
 
@@ -100,11 +137,25 @@ export default function FlexibleRequestFormat() {
                             </code>
                         </pre>
                         <ul className="list-disc pl-6 mt-2">
-                            <li><strong>type</strong>: "array" indicates the value is an array.</li>
-                            <li><strong>item_type</strong>: Specifies the type of each item in the array. Possible values are : ["integer","boolean", "string"] for now.</li>
-                            <li><strong>size</strong>: Number of items in the array (e.g., 3).</li>
+                            <li>
+                                <strong>type</strong>: "array" indicates the
+                                value is an array.
+                            </li>
+                            <li>
+                                <strong>item_type</strong>: Specifies the type
+                                of each item in the array. Possible values are :
+                                ["integer","boolean", "string"] for now.
+                            </li>
+                            <li>
+                                <strong>size</strong>: Number of items in the
+                                array (e.g., 3).
+                            </li>
                         </ul>
-                        <strong>NOTE: Integer will be a random positive integer, and the string will consist of a single word of random size."</strong>
+                        <strong>
+                            NOTE: Integer will be a random positive integer, and
+                            the string will consist of a single word of random
+                            size."
+                        </strong>
                     </div>
 
                     {/* Object */}
@@ -122,23 +173,40 @@ export default function FlexibleRequestFormat() {
                             </code>
                         </pre>
                         <ul className="list-disc pl-6 mt-2">
-                            <li><strong>type</strong>: "object" indicates the value is an json object.</li>
-                            <li><strong>properties</strong>: Defines the structure of the object, following the same format as the <code>response_schema</code>.</li>
+                            <li>
+                                <strong>type</strong>: "object" indicates the
+                                value is an json object.
+                            </li>
+                            <li>
+                                <strong>properties</strong>: Defines the
+                                structure of the object, following the same
+                                format as the <code>responseBody</code>.
+                            </li>
                         </ul>
                     </div>
                 </div>
             </section>
-            <section className='mb-10 text-lg'>
+            <section className="mb-10 text-lg">
                 <div className="font-semibold">Click Here To Know About</div>
                 <ul className="list-disc pl-6">
                     <li>
-                        <Link to="/docs" className=' text-blue-600 hover:text-blue-900 hover:underline'>Overview</Link>
+                        <Link
+                            to="/docs"
+                            className=" text-blue-600 hover:text-blue-900 hover:underline"
+                        >
+                            Overview
+                        </Link>
                     </li>
                     <li>
-                        <Link to="/docs/response" className='text-blue-600 hover:text-blue-900 hover:underline'>Response Format</Link>
-                    </li >
-                </ul >
-            </section >
+                        <Link
+                            to="/docs/response"
+                            className="text-blue-600 hover:text-blue-900 hover:underline"
+                        >
+                            Response Format
+                        </Link>
+                    </li>
+                </ul>
+            </section>
         </div>
     );
 }

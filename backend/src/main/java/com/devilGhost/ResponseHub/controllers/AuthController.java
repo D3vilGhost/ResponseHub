@@ -10,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -27,10 +24,9 @@ public class AuthController {
 
     // this controller is to authenticate user from database
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO){
-        try{
-
-            if(loginRequestDTO.getUsername().isBlank() || loginRequestDTO.getPassword().length()<6 ){
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+        try {
+            if (loginRequestDTO.getUsername().isBlank() || loginRequestDTO.getPassword().length() < 6) {
                 // giving message as "Invalid credentials" and not specific to avoid information leaks
                 // this also prevent Attacks like User Enumeration attack
                 throw new BadCredentialsException("Invalid Credentials");
@@ -41,24 +37,24 @@ public class AuthController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Map.of("error",e.getMessage()));
+                    .body(Map.of("error", e.getMessage()));
 
         }
     }
 
     // this controller is to register user in database
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignUpRequestDTO signupRequestDTO){
+    public ResponseEntity<?> signup(@RequestBody SignUpRequestDTO signupRequestDTO) {
         try {
             // throwing exceptions with different error message to help user signup easily
-            if(signupRequestDTO.getName().isBlank()){
-                throw new BadCredentialsException("Name must not be blank.");
+            if (signupRequestDTO.getName().isBlank()) {
+                throw new BadCredentialsException("Name required.");
             }
-            if(signupRequestDTO.getUsername().isBlank()){
-                throw new BadCredentialsException("Username must not be blank.");
+            if (signupRequestDTO.getUsername().isBlank()) {
+                throw new BadCredentialsException("Username required.");
             }
-            if (signupRequestDTO.getPassword().length()<6){
-                throw new BadCredentialsException("Password length must be least 6.");
+            if (signupRequestDTO.getPassword().length() < 6) {
+                throw new BadCredentialsException("Password too short.");
             }
 
             return authService.signup(signupRequestDTO);
@@ -67,14 +63,14 @@ public class AuthController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Map.of("error",e.getMessage()));
+                    .body(Map.of("error", e.getMessage()));
         }
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletResponse response){
+    public ResponseEntity<?> logout(HttpServletResponse response) {
 
-        Cookie cookie=new Cookie("jwt","");
+        Cookie cookie = new Cookie("jwt", "");
 
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
@@ -85,7 +81,7 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Map.of("message","Successfully logged you out!"));
+                .body(Map.of("message", "Logged out successfully."));
 
     }
 

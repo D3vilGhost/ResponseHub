@@ -31,53 +31,51 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
 
-    public ResponseEntity<?> login(LoginRequestDTO loginRequestDTO){
-        try{
+    public ResponseEntity<?> login(LoginRequestDTO loginRequestDTO) {
+        try {
             Optional<UserEntity> userOptional = userRepository.findByUsername(loginRequestDTO.getUsername());
-            if(userOptional.isEmpty()){
+            if (userOptional.isEmpty()) {
                 throw new BadCredentialsException("Invalid username.");
             }
-            if(!passwordEncoder.matches(loginRequestDTO.getPassword(), userOptional.get().getPassword())){
+            if (!passwordEncoder.matches(loginRequestDTO.getPassword(), userOptional.get().getPassword())) {
                 throw new BadCredentialsException("Wrong Password.");
             }
 
             // create cookie
-            HttpHeaders cookieHeader=jwtService.generateTokenAndCookieHeader(userOptional.get().getUsername());
+            HttpHeaders cookieHeader = jwtService.generateTokenAndCookieHeader(userOptional.get().getUsername());
             // set cookie in response
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .headers(cookieHeader)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(Map.of(
-                            "username",userOptional.get().getUsername(),
-                            "apiKey",userOptional.get().getApiKey()
+                            "name", userOptional.get().getName(),
+                            "apiKey", userOptional.get().getApiKey()
                     ));
-        }
-        catch (BadCredentialsException e) {
+        } catch (BadCredentialsException e) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Map.of("error",e.getMessage()));
-        }
-        catch (Exception e) {
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Map.of("error","Internal Server Error."));
+                    .body(Map.of("error", "Internal Server Error."));
 
         }
 
     }
 
-    public ResponseEntity<?> signup(SignUpRequestDTO signupRequestDTO){
-        try{
+    public ResponseEntity<?> signup(SignUpRequestDTO signupRequestDTO) {
+        try {
             Optional<UserEntity> optionalUser = userRepository.findByUsername(signupRequestDTO.getUsername());
             if (optionalUser.isPresent()) {
-                throw new BadCredentialsException("This username is already taken.");
+                throw new BadCredentialsException("Username already taken.");
             }
 
-            UserEntity newUser=new UserEntity();
+            UserEntity newUser = new UserEntity();
             newUser.setName(signupRequestDTO.getName());
             newUser.setUsername(signupRequestDTO.getUsername());
             newUser.setPassword(passwordEncoder.encode(signupRequestDTO.getPassword()));
@@ -85,14 +83,14 @@ public class AuthService {
 
             userRepository.save(newUser);
 
-            HttpHeaders cookieHeader=jwtService.generateTokenAndCookieHeader(newUser.getUsername());
+            HttpHeaders cookieHeader = jwtService.generateTokenAndCookieHeader(newUser.getUsername());
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .contentType(MediaType.APPLICATION_JSON)
                     .headers(cookieHeader)
                     .body(Map.of(
-                            "username",newUser.getUsername(),
+                            "name", newUser.getName(),
                             "apiKey", newUser.getApiKey()
                     ));
 
@@ -100,14 +98,13 @@ public class AuthService {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Map.of("error",e.getMessage()));
-        }
-        catch (Exception e){
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Map.of("error","Internal Server Error"));
+                    .body(Map.of("error", "Internal Server Error"));
         }
     }
 

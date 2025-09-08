@@ -71,7 +71,9 @@ export default function FixedRequestTile({
                 <div className="text-sm font-semibold mb-2 text-gray-900 overflow-x-auto py-2">
                     /api/client/fixed/{data.endpoint}
                 </div>
-                <pre className="text-gray-700 bg-orange-100 p-2 rounded-md ">{`${data.responseBody}`}</pre>
+                <pre className="text-gray-700 bg-orange-100 p-2 rounded-md ">{`${JSON.stringify(
+                    data.responseBody
+                )}`}</pre>
             </div>
         </div>
     );

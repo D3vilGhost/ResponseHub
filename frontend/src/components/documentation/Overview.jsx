@@ -39,8 +39,8 @@ export default function Overview() {
                         <span className="font-semibold">POST</span> request with
                         a body that defines the expected response structure. The
                         request body includes the desired{" "}
-                        <code className="font-semibold">status_code</code> and a{" "}
-                        <code className="font-semibold">response_schema</code>{" "}
+                        <code className="font-semibold">statusCode</code> and a{" "}
+                        <code className="font-semibold">responseBody</code>{" "}
                         object that outlines the response schema, supporting
                         types like integers, strings, booleans, arrays, and
                         objects. (View Request Format for details.)
@@ -113,9 +113,19 @@ export default function Overview() {
                         characters: <br />
                         Alphanumeric (<code>a-z</code>, <code>A-Z</code>,{" "}
                         <code>0-9</code>), Dot (<code>.</code>), Dash (
-                        <code>-</code>), Underscore (<code>_</code>), EqualTo (
-                        <code>=</code>), QuestionMark (<code>?</code>), and
-                        Ampersand (<code>&amp;</code>).
+                        <code>-</code>),and Underscore (<code>_</code>).
+                    </li>
+                    <li>
+                        When creating a custom fixed endpoint, you should never
+                        include query parameters as part of its definition (for
+                        example, <code>/api/client/fixed/hello?x=1</code> is
+                        invalid). Endpoints must always be defined in a clean
+                        form such as
+                        <code>/api/client/fixed/hello</code>. Query parameters
+                        can be added later when you make requests to the
+                        endpoint, but they will not be processed by the server
+                        and will have no impact on the response or any
+                        calculations.
                     </li>
                 </ul>
             </section>
@@ -184,8 +194,8 @@ export default function Overview() {
                 <pre className="bg-gray-100 p-4 rounded-lg mt-2">
                     <code>
                         {`{
-  "status_code": 201,
-  "response_schema": {
+  "statusCode": 201,
+  "responseBody": {
             "userId": { "type": "integer", "min": 1, "max": 100 },
             "userName": { "type": "string", "size": 1 },
             "isActive": { "type": "boolean" }

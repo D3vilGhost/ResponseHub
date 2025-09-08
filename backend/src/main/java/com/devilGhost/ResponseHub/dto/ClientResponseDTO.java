@@ -1,12 +1,20 @@
 package com.devilGhost.ResponseHub.dto;
 
+import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Setter
-public class FlexibleResponseDTO {
+@Getter
+public class ClientResponseDTO {
+    private Object data;
+    private Map<String, String> error;
 
-    private Map<String,Object> data;
-    private Map<String,String> error;
+    public void setError(String message, String details) {
+        this.error = new HashMap<>();
+        this.error.put("message", message);
+        this.error.put("details", details);
+    }
 }

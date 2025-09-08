@@ -21,9 +21,9 @@ export default function useEditFixedRequest() {
             const res = await fetch("/api/server/dashboard/fixed", {
                 method: "PUT",
                 headers: {
-                    contentType: "application/json",
+                    "Content-Type": "application/json",
                 },
-                body: editRequestData,
+                body: JSON.stringify(editRequestData),
             });
 
             const data = await res.json();

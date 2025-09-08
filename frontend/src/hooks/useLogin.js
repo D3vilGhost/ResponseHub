@@ -6,9 +6,12 @@ function useLogin() {
     const { setAuthUser } = useAuthContext();
     const navigate = useNavigate();
 
-    const login = async ({ username, password }) => {
+    const login = async (loginCredentials) => {
         // check for errors
-        const success = handleInputErrors(username, password);
+        const success = handleInputErrors(
+            loginCredentials.username,
+            loginCredentials.password
+        );
         if (!success) return;
         // create a loading toast
         const loading = toast.loading("Processing...");
@@ -17,17 +20,15 @@ function useLogin() {
             const res = await fetch("/api/server/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: { username, password },
+                body: JSON.stringify(loginCredentials),
             });
-
+            // data contains apiKey object and username
             const data = await res.json();
             if (data.error) {
                 throw new Error(data.error);
             }
-
-            localStorage.setItem("user", JSON.stringify(data.username));
-            setAuthUser({ username });
-            toast.success(`Welcome ${data.username} !`);
+            toast.success(`Welcome ${data.name} !`);
+            setAuthUser({ apiKey: data.apiKey });
             navigate("/dashboard");
         } catch (error) {
             toast.error(error.message);

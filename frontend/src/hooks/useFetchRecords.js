@@ -21,7 +21,7 @@ export default function useFetchRecords() {
                 throw new Error(data.error);
             }
             setRecords(data);
-            setIsNextPageDisabled(records.length < 10);
+            setIsNextPageDisabled(data.length < 10);
         } catch (error) {
             toast.error(error.message);
         } finally {

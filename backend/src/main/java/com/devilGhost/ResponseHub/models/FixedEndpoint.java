@@ -27,9 +27,7 @@ public class FixedEndpoint {
     private String username;
     private String method;
     private String endpoint;
-
     private int statusCode;
-
-    private String responseBody;
+    private Object responseBody;
 
 }

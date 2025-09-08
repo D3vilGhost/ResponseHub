@@ -1,5 +1,6 @@
 package com.devilGhost.ResponseHub.config;
 
+
 public class ClientRequestErrorException extends Exception{
 
     public String message;

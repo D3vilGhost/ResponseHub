@@ -96,7 +96,7 @@ export default function CallRecords() {
                                     time={recordData.time}
                                     method={recordData.method}
                                     endpoint={recordData.endpoint}
-                                    status={recordData.status}
+                                    statusCode={recordData.statusCode}
                                     requestBody={recordData.requestBody}
                                     responseBody={recordData.responseBody}
                                 />
@@ -128,15 +128,26 @@ export default function CallRecords() {
     );
 }
 
-function Record({ time, method, endpoint, status, requestBody, responseBody }) {
+function Record({
+    time,
+    method,
+    endpoint,
+    statusCode,
+    requestBody,
+    responseBody,
+}) {
     return (
         <tr className="p-1 border-b hover:bg-orange-200 rounded-md">
             <td className="px-4 py-2 border text-md text-center">{time}</td>
             <td className="px-4 py-2 border text-md text-center">{method}</td>
             <td className="px-4 py-2 border text-md text-center">{endpoint}</td>
-            <td className="px-4 py-2 border text-md text-center">{status}</td>
+            <td className="px-4 py-2 border text-md text-center">
+                {statusCode}
+            </td>
             <td className="px-4 py-2 border text-md">{requestBody}</td>
-            <td className="px-4 py-2 border text-md">{responseBody}</td>
+            <td className="px-4 py-2 border text-md">
+                {JSON.stringify(responseBody)}
+            </td>
         </tr>
     );
 }

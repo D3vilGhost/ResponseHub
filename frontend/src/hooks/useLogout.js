@@ -23,7 +23,6 @@ const useLogout = () => {
                 throw new Error(data.error);
             }
 
-            localStorage.removeItem("user");
             setAuthUser(null);
             toast.success(data.message);
             navigate("/login");

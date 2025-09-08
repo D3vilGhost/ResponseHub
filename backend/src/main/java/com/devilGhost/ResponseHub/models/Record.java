@@ -7,11 +7,12 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
+import java.util.Map;
 
 @Data
 @Document(collection = "record")
 @CompoundIndex(
-        name="indexingForRecords",
+        name = "indexingForRecords",
         def = "{'username': 1, 'time': 1}",
         unique = true
 )
@@ -25,10 +26,8 @@ public class Record {
 
     private String method;
     private String endpoint;
-    private String status;
-    private String error;
+    private int statusCode;
 
-    // Request and Response are being stored as String after frontend sends it using JSON.stringify
-    private String requestBody;
-    private String responseBody;
+    private Object requestBody;
+    private Object responseBody;
 }

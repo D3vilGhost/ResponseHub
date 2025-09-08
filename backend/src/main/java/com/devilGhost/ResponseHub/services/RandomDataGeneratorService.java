@@ -4,6 +4,7 @@ import com.devilGhost.ResponseHub.config.ClientRequestErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -11,9 +12,9 @@ import java.util.Random;
 @Component
 public class RandomDataGeneratorService {
 
-    private final Random random=new Random();
+    private final Random random = new Random();
 
-    private final String[] WORD_POOL=new String[]{
+    private final String[] WORD_POOL = new String[]{
             "a", "I", "on", "up", "it", "go", "sun", "cat", "run", "map",
             "tree", "moon", "blue", "jump", "apple", "cloud", "river", "stone",
             "forest", "planet", "yellow", "jungle", "horizon", "blanket", "thunder", "freedom",
@@ -31,16 +32,16 @@ public class RandomDataGeneratorService {
     };
     // word_pool takes approx 7kb of memory
 
-    public Object generateData(Object data) throws ClientRequestErrorException , Exception{
+    public Object generateData(Object data) throws ClientRequestErrorException {
         // we know that each field's property will be a json as well
         // with at-least "type" field as it a must
 
-        Map<String,Object> content=(Map<String,Object>) data;
-        String type=(String) content.getOrDefault("type",null);
+        Map<String, Object> content = (Map<String, Object>) data;
+        String type = (String) content.getOrDefault("type", null);
 
         // now based on different values of type we can generate random data
-        if(type==null){
-            throw new ClientRequestErrorException("Invalid request format","Type is null");
+        if (type == null) {
+            throw new ClientRequestErrorException("Invalid request format", "Type is null");
         }
         // now check for value of type
         switch (type) {
@@ -58,8 +59,12 @@ public class RandomDataGeneratorService {
             }
             case "object" -> {
                 // this case is basically recursive in nature
-//                Map<String,Object> requestedObject=(Map<String, Object>)content.getOrDefault("properties",null);
-                return "hey";
+                Map<String, Object> requestedObject = (Map<String, Object>) content.getOrDefault("properties", null);
+                Map<String, Object> responseObject = new HashMap<>();
+                for (String key : requestedObject.keySet()) {
+                    responseObject.put(key, generateData(requestedObject.get(key)));
+                }
+                return responseObject;
             }
         }
         // else type had something else thus throw not valid type exception
@@ -69,15 +74,18 @@ public class RandomDataGeneratorService {
         );
     }
 
-    private long randomInt(Map<String,Object> data) throws ClientRequestErrorException{
+    private long randomInt(Map<String, Object> data) throws ClientRequestErrorException {
         // first check if min and max are valid values
-        Integer min=(Integer)data.getOrDefault("min",null);
-        Integer max=(Integer)data.getOrDefault("max",null);
-        if(min==null || max==null){
-            throw new ClientRequestErrorException("Invalid request format","min and max value must be specified");
+        Integer min = (Integer) data.getOrDefault("min", null);
+        Integer max = (Integer) data.getOrDefault("max", null);
+        if (min == null || max == null) {
+            throw new ClientRequestErrorException(
+                    "Invalid request format",
+                    "Integer range must include both minimum and maximum values."
+            );
         }
         // then only return a random int
-        return random.nextInt(max-min+1)+min;
+        return random.nextInt(max - min + 1) + min;
     }
 
     private boolean randomBoolean() {
@@ -85,21 +93,24 @@ public class RandomDataGeneratorService {
         return random.nextBoolean();
     }
 
-    private String randomString(Map<String,Object> data) throws ClientRequestErrorException{
+    private String randomString(Map<String, Object> data) throws ClientRequestErrorException {
         // first check if size is valid then only proceed
-        Integer size=(Integer) data.getOrDefault("size",null);
-        if(size ==null){
-            throw new ClientRequestErrorException("Invalid request format","size value must be specified");
+        Integer size = (Integer) data.getOrDefault("size", null);
+        if (size == null) {
+            throw new ClientRequestErrorException(
+                    "Invalid request format",
+                    "Field 'size' must specify the expected number of words in the string."
+            );
         }
         // now generate the string
-        StringBuilder responseString=new StringBuilder();
-        for(int i=0;i<size;i++){
+        StringBuilder responseString = new StringBuilder();
+        for (int i = 0; i < size; i++) {
             // for random string generation we will select a word at random from word pool and add it to our
             // responseString
-            int index= random.nextInt(WORD_POOL.length);
+            int index = random.nextInt(WORD_POOL.length);
             responseString.append(WORD_POOL[index]);
             // add a space after it, if it's not the last word
-            if(i!=size-1){
+            if (i != size - 1) {
                 responseString.append(" ");
             }
         }
@@ -107,53 +118,48 @@ public class RandomDataGeneratorService {
         return responseString.toString();
     }
 
-    private Object randomArray(Map<String,Object> data) throws ClientRequestErrorException{
+    private Object randomArray(Map<String, Object> data) throws ClientRequestErrorException {
         // first check if itemType and size are available or not
-        String itemType=(String)data.getOrDefault("item_type",null);
-        Integer size=(Integer)data.getOrDefault("size",null);
-        if(itemType==null || size==null){
+        String itemType = (String) data.getOrDefault("item_type", null);
+        Integer size = (Integer) data.getOrDefault("size", null);
+
+        if (itemType == null || size == null) {
             throw new ClientRequestErrorException(
                     "Invalid request format",
-                    " itemType and size must be defined"
+                    "Array definition must include both 'itemType' and 'size' fields."
             );
         }
-
         // now check if the itemType belongs to allowed ones
-        switch (itemType){
-
-            case "integer"->{
-
-                int[] responseArray=new int[size];
-                for(int i=0;i<size;i++){
-                    responseArray[i]=random.nextInt(10000);
+        switch (itemType) {
+            case "integer" -> {
+                int[] responseArray = new int[size];
+                for (int i = 0; i < size; i++) {
+                    responseArray[i] = random.nextInt(10000);
                 }
                 return responseArray;
 
             }
-            case "boolean"->{
-
-                boolean[] responseArray=new boolean[size];
-                for(int i=0;i<size;i++){
-                    responseArray[i]=random.nextBoolean();
+            case "boolean" -> {
+                boolean[] responseArray = new boolean[size];
+                for (int i = 0; i < size; i++) {
+                    responseArray[i] = random.nextBoolean();
                 }
                 return responseArray;
 
             }
-            case "string"->{
-
-                String[] responseArray=new String[size];
-                for (int i=0;i<size;i++){
-                    responseArray[i]=WORD_POOL[random.nextInt(WORD_POOL.length)];
+            case "string" -> {
+                String[] responseArray = new String[size];
+                for (int i = 0; i < size; i++) {
+                    responseArray[i] = WORD_POOL[random.nextInt(WORD_POOL.length)];
                 }
                 return responseArray;
 
             }
-
         }
         // item type is not the one from allowed thus throw error
         throw new ClientRequestErrorException(
-                "Invalid itemType in response_schema.",
-                " 'itemType' allowed are [integer,boolean,string]"
+                "Invalid 'itemType' in responseBody.",
+                "Allowed values for 'itemType' for arrays are: [integer, boolean, string]."
         );
     }
 

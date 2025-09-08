@@ -24,9 +24,9 @@ export default function useCreateFixedRequest() {
             const res = await fetch("/api/server/dashboard/fixed", {
                 method: "POST",
                 headers: {
-                    contentType: "application/json",
+                    "Content-Type": "application/json",
                 },
-                body: editRequestData,
+                body: JSON.stringify(editRequestData),
             });
 
             const data = await res.json();

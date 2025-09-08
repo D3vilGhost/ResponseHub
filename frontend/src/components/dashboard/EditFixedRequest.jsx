@@ -25,6 +25,7 @@ export default function EditFixedRequest({
     const updateAction = async (e) => {
         e.preventDefault();
         await editFixedRequest(setLoading, editRequestData, setRefreshToken);
+        setShowEditRequest(false);
     };
     return (
         <div className="fixed inset-0 backdrop-blur-lg flex items-center justify-center p-4 overflow-auto">
