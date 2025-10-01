@@ -13,7 +13,7 @@ The `/api/client/fixed` endpoint provides pre-configured API responses that are 
 All requests to both `/api/client/flexible` and `/api/client/fixed` must include an API key in the request header using Bearer token authentication:
 
 ```
-Authorization: Bearer \<your\_api\_key>
+Authorization: Bearer <your_api_key>
 ```
 
 Each request responds with the status code defined in the request. The actual status codes for all requests are available in the user dashboard.
